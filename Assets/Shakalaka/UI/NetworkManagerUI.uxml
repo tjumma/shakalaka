@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Shakalaka/UI/NetworkManagerUI.uss?fileID=7433441132597879392&amp;guid=454b77ab61e50db4584603dd5a5abb5f&amp;type=3#NetworkManagerUI" />
+    <ui:VisualElement name="MultiplayerButtonsPanel" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); left: 60%; width: 40%; justify-content: flex-start; align-self: auto; padding-top: 50px; padding-bottom: 50px; padding-left: 50px; padding-right: 50px;">
+        <ui:Button text="Server" display-tooltip-when-elided="true" name="server-button" class="network-manager-button" />
+        <ui:Button text="Client" display-tooltip-when-elided="true" name="client-button" class="network-manager-button" />
+        <ui:Button text="Host" display-tooltip-when-elided="true" name="host-button" class="network-manager-button" />
+    </ui:VisualElement>
+</ui:UXML>

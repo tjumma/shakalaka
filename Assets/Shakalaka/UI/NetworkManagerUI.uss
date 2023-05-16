@@ -1,0 +1,17 @@
+.network-manager-button {
+    height: 100px;
+    width: 100%;
+    align-self: center;
+    max-width: 300px;
+    max-height: none;
+    flex-shrink: 1;
+    -unity-font: url('project://database/Assets/Shakalaka/UI/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&guid=deb33dccd35ab12468aa4f7c1d5ef3e1&type=3#NotInter-Regular');
+    -unity-font-definition: initial;
+    font-size: 22px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    white-space: nowrap;
+    min-height: auto;
+    margin-top: 0;
+    margin-bottom: 10px;
+}

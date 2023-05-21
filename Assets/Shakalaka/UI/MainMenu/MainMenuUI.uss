@@ -1,0 +1,8 @@
+.main-menu-button {
+    width: 60%;
+    align-self: center;
+    font-size: 30px;
+    height: 10%;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}

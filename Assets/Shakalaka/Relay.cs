@@ -1,36 +1,18 @@
-﻿using System.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using QFSW.QC;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using Unity.Networking.Transport.Relay;
-using Unity.Services.Authentication;
-using Unity.Services.Core;
-using Unity.Services.Core.Environments;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
 
 namespace Shakalaka
 {
-    public class TestRelay : MonoBehaviour
+    public class Relay : MonoBehaviour
     {
-        // private async void Start()
-        // {
-        //     var initializationOptions = new InitializationOptions();
-        //     initializationOptions.SetEnvironmentName("development");
-        //     await UnityServices.InitializeAsync(initializationOptions);
-        //
-        //     AuthenticationService.Instance.SignedIn += OnSignedIn;
-        //     await AuthenticationService.Instance.SignInAnonymouslyAsync();
-        // }
-
-        // private void OnSignedIn()
-        // {
-        //     Debug.Log($"Signed in {AuthenticationService.Instance.PlayerId}");
-        // }
-
         [Command]
-        public async Task<string> CreateRelay()
+        public async UniTask<string> CreateRelay()
         {
             string joinCode = null;
             
@@ -39,7 +21,7 @@ namespace Shakalaka
                 Allocation allocation = await RelayService.Instance.CreateAllocationAsync(3);
 
                 joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
-                Debug.Log(joinCode);
+                Debug.Log($"Join code: {joinCode}");
 
                 RelayServerData relayServerData = new (allocation, "dtls");
                 NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
@@ -54,7 +36,7 @@ namespace Shakalaka
         }
 
         [Command]
-        public async void JoinRelay(string joinCode)
+        public async UniTask JoinRelay(string joinCode)
         {
             try
             {

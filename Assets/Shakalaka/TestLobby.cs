@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using QFSW.QC;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
@@ -7,12 +6,13 @@ using Unity.Services.Core.Environments;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Shakalaka
 {
     public class TestLobby : MonoBehaviour
     {
-        [SerializeField] private TestRelay testRelay;
+        [FormerlySerializedAs("testRelay")] [SerializeField] private Relay relay;
         [SerializeField] private float heartbeatTimerMax;
         [SerializeField] [Range(1.1f, 15f)] private float lobbyPollTimerMax;
         
@@ -71,7 +71,7 @@ namespace Shakalaka
                 {
                     if (_hostLobby == null) //host already joined relay
                     {
-                        testRelay.JoinRelay(_joinedLobby.Data["RelayCode"].Value);
+                        relay.JoinRelay(_joinedLobby.Data["RelayCode"].Value);
                         _joinedLobby = null;
                     }
                 }
@@ -333,7 +333,7 @@ namespace Shakalaka
 
             try
             {
-                string relayCode = await testRelay.CreateRelay();
+                string relayCode = await relay.CreateRelay();
                 
                 _hostLobby = await Lobbies.Instance.UpdateLobbyAsync(_hostLobby.Id, new UpdateLobbyOptions()
                 {

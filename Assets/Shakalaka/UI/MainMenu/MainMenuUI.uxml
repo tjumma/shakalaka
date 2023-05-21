@@ -1,0 +1,16 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Shakalaka/UI/MainMenu/MainMenuUI.uss?fileID=7433441132597879392&amp;guid=af6a03e4b02c7e141b913e9a36792192&amp;type=3#MainMenuUI" />
+    <ui:Label tabindex="-1" text="PlayerId" display-tooltip-when-elided="true" name="player-id-label" style="width: 50%; align-self: flex-end; -unity-text-align: upper-right; font-size: 30px; color: rgb(255, 255, 255); position: absolute;" />
+    <ui:VisualElement name="main-menu-buttons" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); justify-content: flex-start; height: 70%; position: absolute; width: 40%; align-self: center; top: 15%; bottom: 15%;">
+        <ui:Button text="Instant play with Relay" display-tooltip-when-elided="true" name="instant-play-with-relay-button" class="main-menu-button" />
+        <ui:Button text="Quit" display-tooltip-when-elided="true" name="quit-button" class="main-menu-button" />
+    </ui:VisualElement>
+    <ui:VisualElement name="instant-play-with-relay-panel" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0.86); justify-content: center; display: flex; width: 100%; height: 100%; position: absolute; flex-shrink: 0; visibility: hidden;">
+        <ui:Button text="Host" display-tooltip-when-elided="true" name="host-button" style="height: 100px; width: 50%; align-self: center; font-size: 40px; -unity-font-style: bold; margin-bottom: 2px;" />
+        <ui:Label tabindex="-1" text="OR" display-tooltip-when-elided="true" style="height: 100px; color: rgb(255, 255, 255); -unity-text-align: middle-center; font-size: 50px; -unity-font-style: normal; margin-top: 25px; margin-bottom: 25px;" />
+        <ui:VisualElement style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); height: 100px; width: 50%; align-self: center; align-items: flex-start; flex-direction: row; flex-shrink: 1;">
+            <ui:Button text="Join with Code" display-tooltip-when-elided="true" name="join-button" style="height: 100px; width: 50%; align-self: flex-start; font-size: 40px; -unity-font-style: bold; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0;" />
+            <ui:TextField picking-mode="Ignore" name="relay-code-field" readonly="false" hide-mobile-input="false" tooltip="Relay code goes heres" style="width: 50%; justify-content: flex-start; height: 100px; color: rgb(77, 1, 57); margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; font-size: 40px; -unity-text-align: middle-left; white-space: nowrap; align-self: auto; align-items: stretch; -unity-font-style: bold; padding-left: 50px; padding-right: 0;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

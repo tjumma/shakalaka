@@ -3,6 +3,7 @@
     public enum AppStateType
     {
         Startup,
-        MainMenu
+        MainMenu,
+        Game
     }
 }

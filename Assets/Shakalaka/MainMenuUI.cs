@@ -1,4 +1,4 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -9,9 +9,10 @@ namespace Shakalaka
     public class MainMenuUI : MonoBehaviour
     {
         [SerializeField] private UIDocument document;
+
+        public Action HostButtonClicked;
+        public Action<string> JoinButtonClicked;
         
-        //TODO: move to DI and don't address directly
-        [SerializeField] private Relay relay;
         
         private VisualElement _root;
         private Label _playerIdLabel;
@@ -76,15 +77,19 @@ namespace Shakalaka
         private void OnHostButtonClicked()
         {
             // _root.style.visibility = Visibility.Hidden;
-            document.enabled = false;
-            relay.CreateRelay().Forget();
+            // document.enabled = false;
+            // relay.CreateRelay().Forget();
+            
+            HostButtonClicked?.Invoke();
         }
         
         private void OnJoinButtonClicked()
         {
             // _root.style.visibility = Visibility.Hidden;
-            document.enabled = false;
-            relay.JoinRelay(_relayCodeField.text).Forget();
+            // document.enabled = false;
+            // relay.JoinRelay(_relayCodeField.text).Forget();
+            
+            JoinButtonClicked?.Invoke(_relayCodeField.text);
         }
 
         public void SetPlayerId(string playerId)

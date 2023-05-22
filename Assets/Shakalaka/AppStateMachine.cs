@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Shakalaka
 {
-    [CreateAssetMenu(menuName = "Shakalaka/AppStateMachine", fileName = "AppStateMachine")]
+    [CreateAssetMenu(menuName = "Shakalaka/AppStateMachine", fileName = "AppStateMachine")] 
     public class AppStateMachine : SerializedScriptableObject
     {
         [OdinSerialize] private Dictionary<AppStateType, AppState> _states = new Dictionary<AppStateType, AppState>();

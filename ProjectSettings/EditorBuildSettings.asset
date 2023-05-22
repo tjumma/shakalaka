@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Shakalaka/Scenes/MainMenu.unity
     guid: 72f34c919d647c4438ad19b0cbc1012c
+  - enabled: 1
+    path: Assets/Shakalaka/Scenes/Game.unity
+    guid: 5943a79c8fdca7d46bf4c92514ec21b2
   m_configObjects: {}

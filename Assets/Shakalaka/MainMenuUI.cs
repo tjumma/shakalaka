@@ -10,63 +10,85 @@ namespace Shakalaka
     {
         [SerializeField] private UIDocument document;
 
-        public Action HostButtonClicked;
-        public Action<string> JoinButtonClicked;
+        public Action LocalHostButtonClicked;
+        public Action LocalClientButtonClicked;
         
-        
+        public Action RelayHostButtonClicked;
+        public Action<string> RelayClientButtonClicked;
+
         private VisualElement _root;
         private Label _playerIdLabel;
 
-        private Button _instantPlayWithRelayButton;
+        private Button _playLocallyButton;
+        private Button _playWithRelayButton;
         private Button _quitButton;
 
-        private VisualElement _instantPlayWithRelayPanel;
-        private Button _hostButton;
-        private Button _joinButton;
-        private TextField _relayCodeField;
+        private VisualElement _playLocallyPopup;
+        private Button _playLocallyHostButton;
+        private Button _playLocallyJoinButton;
+
+        private VisualElement _playWithRelayPopup;
+        private Button _playWithRelayHostButton;
+        private Button _playWithRelayJoinButton;
+        private TextField _playWithRelayCodeField;
 
         private void Awake()
         {
             _root = document.rootVisualElement;
             _playerIdLabel = _root.Q<Label>("player-id-label");
 
-            _instantPlayWithRelayButton = _root.Q<Button>("instant-play-with-relay-button");
+            _playLocallyButton = _root.Q<Button>("play-locally-button");
+            _playWithRelayButton = _root.Q<Button>("play-with-relay-button");
             _quitButton = _root.Q<Button>("quit-button");
 
-            _instantPlayWithRelayPanel = _root.Q<VisualElement>("instant-play-with-relay-panel");
-            _hostButton = _instantPlayWithRelayPanel.Q<Button>("host-button");
-            _joinButton = _instantPlayWithRelayPanel.Q<Button>("join-button");
-            _relayCodeField = _instantPlayWithRelayPanel.Q<TextField>("relay-code-field");
+            _playLocallyPopup = _root.Q<VisualElement>("play-locally-popup");
+            _playLocallyHostButton = _playLocallyPopup.Q<Button>("host-button");
+            _playLocallyJoinButton = _playLocallyPopup.Q<Button>("join-button");
+
+            _playWithRelayPopup = _root.Q<VisualElement>("play-with-relay-popup");
+            _playWithRelayHostButton = _playWithRelayPopup.Q<Button>("host-button");
+            _playWithRelayJoinButton = _playWithRelayPopup.Q<Button>("join-button");
+            _playWithRelayCodeField = _playWithRelayPopup.Q<TextField>("relay-code-field");
         }
 
         private void OnEnable()
         {
-            _instantPlayWithRelayButton.clicked += OnInstantPlayWithRelayClicked;
+            _playLocallyButton.clicked += OnPlayLocallyButtonClicked;
+            _playWithRelayButton.clicked += OnPlayWithRelayButtonClicked;
             _quitButton.clicked += OnQuitButtonClicked;
+
+            _playLocallyHostButton.clicked += OnPlayLocallyHostButtonClicked;
+            _playLocallyJoinButton.clicked += OnPlayLocallyJoinButtonClicked;
             
-            _hostButton.clicked += OnHostButtonClicked;
-            _joinButton.clicked += OnJoinButtonClicked;
+            _playWithRelayHostButton.clicked += OnPlayWithRelayHostButtonClicked;
+            _playWithRelayJoinButton.clicked += OnPlayWithRelayJoinButtonClicked;
         }
 
         private void OnDisable()
         {
-            _instantPlayWithRelayButton.clicked -= OnInstantPlayWithRelayClicked;
+            _playWithRelayButton.clicked -= OnPlayWithRelayButtonClicked;
             _quitButton.clicked -= OnQuitButtonClicked;
-            
-            _hostButton.clicked -= OnHostButtonClicked;
-            _joinButton.clicked -= OnJoinButtonClicked;
+
+            _playWithRelayHostButton.clicked -= OnPlayWithRelayHostButtonClicked;
+            _playWithRelayJoinButton.clicked -= OnPlayWithRelayJoinButtonClicked;
         }
         
-        private void OnInstantPlayWithRelayClicked()
+        private void OnPlayLocallyButtonClicked()
         {
-            Debug.Log("InstantPlayWithRelay clicked");
-            _instantPlayWithRelayPanel.style.visibility = Visibility.Visible;
+            Debug.Log("PlayLocally clicked");
+            _playLocallyPopup.style.visibility = Visibility.Visible;
         }
-        
+
+        private void OnPlayWithRelayButtonClicked()
+        {
+            Debug.Log("PlayWithRelay clicked");
+            _playWithRelayPopup.style.visibility = Visibility.Visible;
+        }
+
         private void OnQuitButtonClicked()
         {
             Debug.Log("Quit clicked");
-            
+
 #if UNITY_EDITOR
             EditorApplication.ExitPlaymode();
 #else
@@ -74,22 +96,24 @@ namespace Shakalaka
 #endif
         }
         
-        private void OnHostButtonClicked()
+        private void OnPlayLocallyHostButtonClicked()
         {
-            // _root.style.visibility = Visibility.Hidden;
-            // document.enabled = false;
-            // relay.CreateRelay().Forget();
-            
-            HostButtonClicked?.Invoke();
+            LocalHostButtonClicked?.Invoke();
         }
         
-        private void OnJoinButtonClicked()
+        private void OnPlayLocallyJoinButtonClicked()
         {
-            // _root.style.visibility = Visibility.Hidden;
-            // document.enabled = false;
-            // relay.JoinRelay(_relayCodeField.text).Forget();
-            
-            JoinButtonClicked?.Invoke(_relayCodeField.text);
+            LocalClientButtonClicked?.Invoke();
+        }
+
+        private void OnPlayWithRelayHostButtonClicked()
+        {
+            RelayHostButtonClicked?.Invoke();
+        }
+
+        private void OnPlayWithRelayJoinButtonClicked()
+        {
+            RelayClientButtonClicked?.Invoke(_playWithRelayCodeField.text);
         }
 
         public void SetPlayerId(string playerId)

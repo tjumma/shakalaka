@@ -10,8 +10,8 @@ namespace Shakalaka
         public override async UniTask Enter()
         {
             Debug.Log("Entering StartupState...");
-            var authenticator = _appScope.Container.Resolve<Authenticator>();
-            await authenticator.Authenticate();
+            // var authenticator = _appScope.Container.Resolve<Authenticator>();
+            // await authenticator.Authenticate();
             _sm.TransitionTo(AppStateType.MainMenu).Forget();
         }
         

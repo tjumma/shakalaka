@@ -7,6 +7,8 @@ namespace Shakalaka
     public class AppScope : LifetimeScope
     {
         [SerializeField] private AppStateMachine appStateMachine;
+        [SerializeField] private GameObject quantumConsole;
+        [SerializeField] private GameObject eventSystem;
         
         protected override void Configure(IContainerBuilder builder)
         {
@@ -18,6 +20,10 @@ namespace Shakalaka
         void Start()
         {
             appStateMachine.Launch(this).Forget();
+            
+            DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(quantumConsole);
+            DontDestroyOnLoad(eventSystem);
         }
     }
 }

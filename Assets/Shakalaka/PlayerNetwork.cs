@@ -8,8 +8,6 @@ namespace Shakalaka
         [SerializeField] private float moveSpeed;
 
         private Vector3 _serverMoveInput;
-        
-        
 
         private void Update()
         {
@@ -41,8 +39,14 @@ namespace Shakalaka
             _serverMoveInput = moveInput;
         }
 
+        private void Start()
+        {
+            Debug.Log("PlayerNetwork Start");
+        }
+
         public override void OnNetworkSpawn()
         {
+            Debug.Log("PlayerNetwork OnNetworkSpawn");
             NetworkManager.Singleton.NetworkTickSystem.Tick += OnTick;
         }
         

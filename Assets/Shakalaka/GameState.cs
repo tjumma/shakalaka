@@ -1,6 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
+using Unity.Networking.Transport;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using VContainer;
@@ -21,7 +22,7 @@ namespace Shakalaka
         public override async UniTask Enter()
         {
             Debug.Log("Entering GameState...");
-            var playerData = _gameScope.Container.Resolve<PlayerData>();
+            var playerData = _appScope.Container.Resolve<PlayerData>();
             
             if (playerData.IsLocal)
             {
@@ -29,11 +30,13 @@ namespace Shakalaka
 
                 if (playerData.IsHost)
                 {
+                    NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData($"127.0.0.1", (ushort)7777);
                     NetworkManager.Singleton.StartHost();
                     NetworkManager.Singleton.SceneManager.LoadScene("Game", LoadSceneMode.Single);
                 }
                 else if (playerData.IsClient)
                 {
+                    NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData($"127.0.0.1", (ushort)7777);
                     NetworkManager.Singleton.StartClient();
                 }
             }

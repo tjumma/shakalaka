@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class CardsPile : MonoBehaviour
 {
+	public bool liftBeforeAdding;
+	public bool faceDown = true;
 	public float height = 0.5f;
 	public float width = 1f;
 	[Range(0f, 90f)] public float maxCardAngle = 5f;
@@ -42,6 +44,13 @@ public class CardsPile : MonoBehaviour
 			cardsHolders.Insert(index, cardHolder);
 		}
 
+		if (liftBeforeAdding)
+		{
+			var cardLocalPos = card.transform.localPosition;
+			cardLocalPos += new Vector3(0, 0.5f, 0);
+			card.transform.localPosition = cardLocalPos;
+		}
+		
 		updatePositions = true;
 
 		if (!moveAnimation)
@@ -111,8 +120,24 @@ public class CardsPile : MonoBehaviour
 			if (!forceSetPosition.Contains(cards[i]))
 			{
 				cards[i].transform.DOKill();
+				
+				// var sequence = DOTween.Sequence();
+				//
+				// var localPos = cards[i].transform.localPosition;
+				// var step1LocalPos = localPos + new Vector3(0, 0, 1);
+				//
+				// sequence.Append(cards[i].transform.DOLocalMove(step1LocalPos, 0.1f));
+				// sequence.Append(cards[i].transform.DOLocalMove(Vector3.zero, moveDuration - 0.1f));
+
 				cards[i].transform.DOLocalMove(Vector3.zero, moveDuration);
-				cards[i].transform.DOLocalRotate(Vector3.zero, moveDuration);
+				//cards[i].transform.DOLocalRotate(Vector3.zero, moveDuration);
+				cards[i].transform.DOLocalRotate(faceDown? Vector3.zero : new Vector3(0, 180, 0), moveDuration);
+				// var sequence = DOTween.Sequence();
+				// sequence.AppendInterval((moveDuration / 2f) - 0.1f);
+				// sequence.Append(cards[i].transform
+				// 	.DOLocalRotate(faceDown ? Vector3.zero : new Vector3(0, 180, 0), 0f));
+				// sequence.AppendInterval((moveDuration / 2f) - 0.1f);
+				// sequence.Play();
 				cards[i].transform.DOScale(Vector3.one, moveDuration);
 			}
 			else
@@ -120,7 +145,8 @@ public class CardsPile : MonoBehaviour
 				forceSetPosition.Remove(cards[i]);
 
 				cards[i].transform.localPosition = Vector3.zero;
-				cards[i].transform.localRotation = Quaternion.identity;
+				//cards[i].transform.localRotation = Quaternion.identity;
+				cards[i].transform.localRotation = faceDown? Quaternion.identity : Quaternion.Euler(0, 180, 0);
 				cards[i].transform.localScale = Vector3.one;
 			}
 		}

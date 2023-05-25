@@ -26,7 +26,8 @@ public class DemoScript : MonoBehaviour
 
         GameObject card = deck.Cards[deck.Cards.Count - 1];
         deck.Remove(card);
-        hand.Add(card, 0);
+        // hand.Add(card, 0);
+        hand.Add(card);
     }
 
     public void RemoveCard()

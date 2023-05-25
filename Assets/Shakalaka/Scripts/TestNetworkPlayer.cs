@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Shakalaka
 {
-    public class PlayerNetwork : NetworkBehaviour
+    public class TestNetworkPlayer : NetworkBehaviour
     {
         [SerializeField] private float moveSpeed;
 

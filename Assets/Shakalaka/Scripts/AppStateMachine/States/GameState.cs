@@ -26,8 +26,6 @@ namespace Shakalaka
             
             if (playerData.IsLocal)
             {
-                //TODO: set transport to UnityTransport!
-
                 if (playerData.IsHost)
                 {
                     NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData($"127.0.0.1", (ushort)7777);
@@ -42,20 +40,20 @@ namespace Shakalaka
             }
             else if (playerData.IsRelay)
             {
-                //TODO: set transport to RelayUnityTransport!
-                
                 var authenticator = _appScope.Container.Resolve<Authenticator>();
                 await authenticator.Authenticate();
-                var relay = _gameScope.Container.Resolve<Relay>();
+                var relay = _appScope.Container.Resolve<Relay>();
             
                 if (playerData.IsHost)
                 {
-                    relay.CreateRelay().Forget();
+                    await relay.CreateRelay();
                     NetworkManager.Singleton.SceneManager.LoadScene("Game", LoadSceneMode.Single);
                 }
                 else if (playerData.IsClient)
-                    relay.JoinRelay(playerData.RelayCode).Forget();
+                    await relay.JoinRelay(playerData.RelayCode);
             }
+            
+            Debug.Log("Entered GameState...");
         }
         
         public override async UniTask Exit()

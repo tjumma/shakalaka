@@ -28,6 +28,12 @@ namespace Shakalaka
             //TODO: subscribe ui to PlayerData to react to changes
             ui.SetPlayerId(playerData.PlayerId);
             
+            ui.LocalServerButtonClicked += () =>
+            {
+                playerData.IsServer = true;
+                playerData.IsLocal = true;
+                _sm.TransitionTo(AppStateType.Game).Forget();
+            };
             ui.LocalHostButtonClicked += () =>
             {
                 playerData.IsHost = true;

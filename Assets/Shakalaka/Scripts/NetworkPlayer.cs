@@ -1,13 +1,20 @@
-﻿using Unity.Netcode;
+﻿using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
+using VContainer;
 
 namespace Shakalaka
 {
     public class NetworkPlayer : NetworkBehaviour
     {
-        private NetworkVariable<int> testInt = new NetworkVariable<int>(0);
-        private NetworkList<int> cards = new NetworkList<int>();
+        private ServerBoard _serverBoard;
 
+        [Inject]
+        public void Construct(ServerBoard serverBoard)
+        {
+            _serverBoard = serverBoard;
+        }
+        
         private void Start()
         {
             Debug.Log("NetworkPlayer Start");
@@ -16,38 +23,36 @@ namespace Shakalaka
         public override void OnNetworkSpawn()
         {
             Debug.Log($"NetworkPlayer OnNetworkSpawn. OwnerClientId: {OwnerClientId}");
-            Debug.Log($"Current value of testInt is: {testInt.Value}");
-            testInt.OnValueChanged += (prevValue, newValue) => { Debug.Log($"testInt value changed from {prevValue} to {newValue}");};
         }
 
         private void Update()
         {
-            if (!IsOwner)
+            if (!IsOwner) //local player object or object owned by local player
                 return;
             
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                RequestRandomNumberServerRpc(new ServerRpcParams());
+                RequestMySecretIntServerRpc(new ServerRpcParams());
             }
         }
 
         [ServerRpc]
-        private void RequestRandomNumberServerRpc(ServerRpcParams serverRpcParams)
+        private void RequestMySecretIntServerRpc(ServerRpcParams serverRpcParams)
         {
-            var senderClientId = serverRpcParams.Receive.SenderClientId;
-            Debug.Log($"RequestRandomNumberServerRpc. SenderClientId: {senderClientId}");
+            ulong senderClientId = serverRpcParams.Receive.SenderClientId;
+            Debug.Log($"RequestMySecretIntServerRpc. SenderClientId: {senderClientId}");
 
-            if (senderClientId == OwnerClientId)
-            {
-                Debug.Log("Can change for this player object");
-                var randomInt = Random.Range(10, 99);
-                Debug.Log($"Changing testInt to {randomInt} on server");
-                testInt.Value = randomInt;
-            }
-            else
-            {
-                Debug.Log($"Can't change for this player object since its owner is {OwnerClientId}. But request was made by {senderClientId}");
-            }
+            var secretInt = _serverBoard.GetSecretIntForClient((int)senderClientId);
+
+            var clientRpcParams = new ClientRpcParams
+                { Send = new ClientRpcSendParams { TargetClientIds = new List<ulong> { senderClientId } } };
+            SendSecretIntClientRpc(secretInt, clientRpcParams);
+        }
+
+        [ClientRpc]
+        private void SendSecretIntClientRpc(int secretInt, ClientRpcParams rpsParams)
+        {
+            Debug.Log($"This will send secretInt only to requestor-owner: {secretInt}");
         }
     }
 }

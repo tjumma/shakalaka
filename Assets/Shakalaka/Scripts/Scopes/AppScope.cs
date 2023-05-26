@@ -10,7 +10,7 @@ namespace Shakalaka
         [SerializeField] private GameObject quantumConsole;
         [SerializeField] private GameObject eventSystem;
         [SerializeField] private Relay relay;
-        
+
         protected override void Configure(IContainerBuilder builder)
         {
             builder.RegisterInstance(appStateMachine);

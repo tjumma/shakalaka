@@ -3,6 +3,7 @@
     public class PlayerData
     {
         public string PlayerId;
+        public bool IsServer;
         public bool IsHost;
         public bool IsClient;
         public bool IsLocal;

@@ -10,6 +10,7 @@ namespace Shakalaka
     {
         [SerializeField] private UIDocument document;
 
+        public Action LocalServerButtonClicked;
         public Action LocalHostButtonClicked;
         public Action LocalClientButtonClicked;
         
@@ -24,6 +25,7 @@ namespace Shakalaka
         private Button _quitButton;
 
         private VisualElement _playLocallyPopup;
+        private Button _playLocallyServerButton;
         private Button _playLocallyHostButton;
         private Button _playLocallyJoinButton;
 
@@ -42,6 +44,7 @@ namespace Shakalaka
             _quitButton = _root.Q<Button>("quit-button");
 
             _playLocallyPopup = _root.Q<VisualElement>("play-locally-popup");
+            _playLocallyServerButton = _playLocallyPopup.Q<Button>("server-button");
             _playLocallyHostButton = _playLocallyPopup.Q<Button>("host-button");
             _playLocallyJoinButton = _playLocallyPopup.Q<Button>("join-button");
 
@@ -57,6 +60,7 @@ namespace Shakalaka
             _playWithRelayButton.clicked += OnPlayWithRelayButtonClicked;
             _quitButton.clicked += OnQuitButtonClicked;
 
+            _playLocallyServerButton.clicked += OnPlayLocallyServerButtonClicked;
             _playLocallyHostButton.clicked += OnPlayLocallyHostButtonClicked;
             _playLocallyJoinButton.clicked += OnPlayLocallyJoinButtonClicked;
             
@@ -94,6 +98,11 @@ namespace Shakalaka
 #else
             Application.Quit();
 #endif
+        }
+        
+        private void OnPlayLocallyServerButtonClicked()
+        {
+            LocalServerButtonClicked?.Invoke();
         }
         
         private void OnPlayLocallyHostButtonClicked()

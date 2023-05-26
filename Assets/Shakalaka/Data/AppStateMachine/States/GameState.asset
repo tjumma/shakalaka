@@ -21,3 +21,5 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  playerPrefab: {fileID: 5412026983646877412, guid: f7fd9d656b54e834b80c6aace49a90b0,
+    type: 3}

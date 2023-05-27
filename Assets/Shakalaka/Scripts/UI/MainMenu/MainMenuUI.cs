@@ -28,11 +28,13 @@ namespace Shakalaka
         private Button _playLocallyServerButton;
         private Button _playLocallyHostButton;
         private Button _playLocallyJoinButton;
+        private Button _closePlayLocallyPopupButton;
 
         private VisualElement _playWithRelayPopup;
         private Button _playWithRelayHostButton;
         private Button _playWithRelayJoinButton;
         private TextField _playWithRelayCodeField;
+        private Button _closePlayWithRelayPopupButton;
 
         private void Awake()
         {
@@ -47,11 +49,13 @@ namespace Shakalaka
             _playLocallyServerButton = _playLocallyPopup.Q<Button>("server-button");
             _playLocallyHostButton = _playLocallyPopup.Q<Button>("host-button");
             _playLocallyJoinButton = _playLocallyPopup.Q<Button>("join-button");
+            _closePlayLocallyPopupButton = _playLocallyPopup.Q<Button>("close-popup-button");
 
             _playWithRelayPopup = _root.Q<VisualElement>("play-with-relay-popup");
             _playWithRelayHostButton = _playWithRelayPopup.Q<Button>("host-button");
             _playWithRelayJoinButton = _playWithRelayPopup.Q<Button>("join-button");
             _playWithRelayCodeField = _playWithRelayPopup.Q<TextField>("relay-code-field");
+            _closePlayWithRelayPopupButton = _playWithRelayPopup.Q<Button>("close-popup-button");
         }
 
         private void OnEnable()
@@ -63,9 +67,21 @@ namespace Shakalaka
             _playLocallyServerButton.clicked += OnPlayLocallyServerButtonClicked;
             _playLocallyHostButton.clicked += OnPlayLocallyHostButtonClicked;
             _playLocallyJoinButton.clicked += OnPlayLocallyJoinButtonClicked;
+            _closePlayLocallyPopupButton.clicked += OnClosePlayLocallyPopupButtonClicked;
             
             _playWithRelayHostButton.clicked += OnPlayWithRelayHostButtonClicked;
             _playWithRelayJoinButton.clicked += OnPlayWithRelayJoinButtonClicked;
+            _closePlayWithRelayPopupButton.clicked += OnClosePlayWithRelayPopupButtonClicked;
+        }
+
+        private void OnClosePlayLocallyPopupButtonClicked()
+        {
+            _playLocallyPopup.style.visibility = Visibility.Hidden;
+        }
+        
+        private void OnClosePlayWithRelayPopupButtonClicked()
+        {
+            _playWithRelayPopup.style.visibility = Visibility.Hidden;
         }
 
         private void OnDisable()

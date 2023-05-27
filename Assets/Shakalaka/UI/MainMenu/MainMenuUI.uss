@@ -6,3 +6,12 @@
     margin-top: 25px;
     margin-bottom: 25px;
 }
+
+.close-popup-button {
+    font-size: 40px;
+}
+
+.close-popup-button:hover {
+    -unity-font-style: bold;
+    font-size: 40px;
+}

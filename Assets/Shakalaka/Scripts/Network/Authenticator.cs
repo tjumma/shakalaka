@@ -21,7 +21,7 @@ namespace Shakalaka
             
             var initializationOptions = new InitializationOptions();
             initializationOptions.SetEnvironmentName("development");
-            //this profile is not a playerName, its a name of profile from PlayerPrefs on this device so that two builds from the same device can get different PlayerIds and play together.
+            //this profile is not a playerName, it's a name of profile from PlayerPrefs on this device so that two builds from the same device can get different PlayerIds and play together.
             var profileName = $"{Random.Range(0, 1000000)}";
             initializationOptions.SetProfile(profileName);
             await UnityServices.InitializeAsync(initializationOptions);

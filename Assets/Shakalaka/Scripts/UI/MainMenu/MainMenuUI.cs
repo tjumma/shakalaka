@@ -13,15 +13,18 @@ namespace Shakalaka
         public Action LocalServerButtonClicked;
         public Action LocalHostButtonClicked;
         public Action LocalClientButtonClicked;
-        
+
         public Action RelayHostButtonClicked;
         public Action<string> RelayClientButtonClicked;
+
+        public Action<string, ushort> MultiplayerJoinServerButtonClicked;
 
         private VisualElement _root;
         private Label _playerIdLabel;
 
         private Button _playLocallyButton;
         private Button _playWithRelayButton;
+        private Button _multiplayerButton;
         private Button _quitButton;
 
         private VisualElement _playLocallyPopup;
@@ -36,6 +39,12 @@ namespace Shakalaka
         private TextField _playWithRelayCodeField;
         private Button _closePlayWithRelayPopupButton;
 
+        private VisualElement _multiplayerPopup;
+        private TextField _multiplayerServerIpField;
+        private TextField _multiplayerServerPortField;
+        private Button _multiplayerJoinServerButton;
+        private Button _closeMultiplayerPopupButton;
+
         private void Awake()
         {
             _root = document.rootVisualElement;
@@ -43,6 +52,7 @@ namespace Shakalaka
 
             _playLocallyButton = _root.Q<Button>("play-locally-button");
             _playWithRelayButton = _root.Q<Button>("play-with-relay-button");
+            _multiplayerButton = _root.Q<Button>("multiplayer-button");
             _quitButton = _root.Q<Button>("quit-button");
 
             _playLocallyPopup = _root.Q<VisualElement>("play-locally-popup");
@@ -56,53 +66,49 @@ namespace Shakalaka
             _playWithRelayJoinButton = _playWithRelayPopup.Q<Button>("join-button");
             _playWithRelayCodeField = _playWithRelayPopup.Q<TextField>("relay-code-field");
             _closePlayWithRelayPopupButton = _playWithRelayPopup.Q<Button>("close-popup-button");
+
+            _multiplayerPopup = _root.Q<VisualElement>("multiplayer-popup");
+            _multiplayerServerIpField = _multiplayerPopup.Q<TextField>("server-ip-field");
+            _multiplayerServerPortField = _multiplayerPopup.Q<TextField>("server-port-field");
+            _multiplayerJoinServerButton = _multiplayerPopup.Q<Button>("server-join-button");
+            _closeMultiplayerPopupButton = _multiplayerPopup.Q<Button>("close-popup-button");
         }
 
         private void OnEnable()
         {
-            _playLocallyButton.clicked += OnPlayLocallyButtonClicked;
-            _playWithRelayButton.clicked += OnPlayWithRelayButtonClicked;
+            _playLocallyButton.clicked += () => OpenPopup(_playLocallyPopup);
+            _playWithRelayButton.clicked += () => OpenPopup(_playWithRelayPopup);
+            _multiplayerButton.clicked += () => OpenPopup(_multiplayerPopup);
             _quitButton.clicked += OnQuitButtonClicked;
 
             _playLocallyServerButton.clicked += OnPlayLocallyServerButtonClicked;
             _playLocallyHostButton.clicked += OnPlayLocallyHostButtonClicked;
             _playLocallyJoinButton.clicked += OnPlayLocallyJoinButtonClicked;
-            _closePlayLocallyPopupButton.clicked += OnClosePlayLocallyPopupButtonClicked;
-            
+            _closePlayLocallyPopupButton.clicked += () => ClosePopup(_playLocallyPopup);
+
             _playWithRelayHostButton.clicked += OnPlayWithRelayHostButtonClicked;
             _playWithRelayJoinButton.clicked += OnPlayWithRelayJoinButtonClicked;
-            _closePlayWithRelayPopupButton.clicked += OnClosePlayWithRelayPopupButtonClicked;
+            _closePlayWithRelayPopupButton.clicked += () => ClosePopup(_playWithRelayPopup);
+
+            _multiplayerJoinServerButton.clicked += OnMultiplayerJoinServerButtonClicked;
+            _closeMultiplayerPopupButton.clicked += () => ClosePopup(_multiplayerPopup);
         }
 
-        private void OnClosePlayLocallyPopupButtonClicked()
+        private void OnMultiplayerJoinServerButtonClicked()
         {
-            _playLocallyPopup.style.visibility = Visibility.Hidden;
-        }
-        
-        private void OnClosePlayWithRelayPopupButtonClicked()
-        {
-            _playWithRelayPopup.style.visibility = Visibility.Hidden;
+            Debug.Log("JoinServer clicked");
+            MultiplayerJoinServerButtonClicked?.Invoke(_multiplayerServerIpField.text,
+                ushort.Parse(_multiplayerServerPortField.text));
         }
 
-        private void OnDisable()
+        private void ClosePopup(VisualElement popup)
         {
-            _playWithRelayButton.clicked -= OnPlayWithRelayButtonClicked;
-            _quitButton.clicked -= OnQuitButtonClicked;
-
-            _playWithRelayHostButton.clicked -= OnPlayWithRelayHostButtonClicked;
-            _playWithRelayJoinButton.clicked -= OnPlayWithRelayJoinButtonClicked;
-        }
-        
-        private void OnPlayLocallyButtonClicked()
-        {
-            Debug.Log("PlayLocally clicked");
-            _playLocallyPopup.style.visibility = Visibility.Visible;
+            popup.style.visibility = Visibility.Hidden;
         }
 
-        private void OnPlayWithRelayButtonClicked()
+        private void OpenPopup(VisualElement popup)
         {
-            Debug.Log("PlayWithRelay clicked");
-            _playWithRelayPopup.style.visibility = Visibility.Visible;
+            popup.style.visibility = Visibility.Visible;
         }
 
         private void OnQuitButtonClicked()
@@ -115,17 +121,17 @@ namespace Shakalaka
             Application.Quit();
 #endif
         }
-        
+
         private void OnPlayLocallyServerButtonClicked()
         {
             LocalServerButtonClicked?.Invoke();
         }
-        
+
         private void OnPlayLocallyHostButtonClicked()
         {
             LocalHostButtonClicked?.Invoke();
         }
-        
+
         private void OnPlayLocallyJoinButtonClicked()
         {
             LocalClientButtonClicked?.Invoke();

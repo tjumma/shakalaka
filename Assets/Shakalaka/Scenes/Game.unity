@@ -510,6 +510,7 @@ MonoBehaviour:
     type: 3}
   bluePlayerPrefab: {fileID: 5504481461898199000, guid: ce06cb621ff9fc84fbcd226e3d7a622e,
     type: 3}
+  connectedClientIds: 
 --- !u!1 &1740064849
 GameObject:
   m_ObjectHideFlags: 0
@@ -558,6 +559,5 @@ MonoBehaviour:
     TypeName: Shakalaka.AppScope
   autoRun: 1
   autoInjectGameObjects: []
-  appState: {fileID: 11400000, guid: 27e8be788521ba840b9f6de351d995ef, type: 2}
   serverBoard: {fileID: 489955846}
   playerSpawner: {fileID: 1559733852}

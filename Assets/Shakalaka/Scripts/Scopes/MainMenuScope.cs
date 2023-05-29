@@ -48,6 +48,15 @@ namespace Shakalaka
 
             ui.RelayClientButtonClicked += (relayCode) =>
                 TrySetupConnection(ConnectionType.Relay, ConnectionRole.Client, relayCode).Forget();
+
+            ui.MultiplayerJoinServerButtonClicked += OnMultiplayJoinServer;
+        }
+
+        private void OnMultiplayJoinServer(string ip, ushort port)
+        {
+            Debug.Log("Setting up Multiplay connection");
+            NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData(ip, port);
+            Debug.Log(NetworkManager.Singleton.StartClient());
         }
 
         private async UniTaskVoid TrySetupConnection(ConnectionType connectionType, ConnectionRole connectionRole,

@@ -12,6 +12,30 @@ namespace Shakalaka
     public class Relay : MonoBehaviour
     {
         [Command]
+        public async UniTask<string> CreateRelayServer()
+        {
+            string joinCode = null;
+            
+            try
+            {
+                Allocation allocation = await RelayService.Instance.CreateAllocationAsync(3);
+
+                joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+                Debug.Log($"Join code: {joinCode}");
+
+                RelayServerData relayServerData = new (allocation, "dtls");
+                NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
+                NetworkManager.Singleton.StartServer();
+            }
+            catch (RelayServiceException exception)
+            {
+                Debug.Log(exception);
+            }
+            
+            return joinCode;
+        }
+        
+        [Command]
         public async UniTask<string> CreateRelay()
         {
             string joinCode = null;

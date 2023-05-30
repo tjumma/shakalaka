@@ -22,10 +22,17 @@ namespace Shakalaka
                 return;
             
             Debug.Log($"OnLoadEventCompleted. ClientsConnected: {NetworkManager.Singleton.ConnectedClientsIds.Count}");
-            var allCardTypes = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-            
-            playerHandsByClientId = new Dictionary<ulong, int[]>();
             var connectedClientIds = NetworkManager.Singleton.ConnectedClientsIds;
+            
+            var allCardTypes = new List<int>();
+            var numberOfCards = connectedClientIds.Count * 5;
+            
+            for (int c = 0; c < numberOfCards; c++)
+            {
+                allCardTypes.Add(c);
+            }
+
+            playerHandsByClientId = new Dictionary<ulong, int[]>();
 
             foreach (var clientId in connectedClientIds)
             {

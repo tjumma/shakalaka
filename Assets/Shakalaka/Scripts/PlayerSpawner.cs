@@ -29,31 +29,38 @@ namespace Shakalaka
             if (!IsServer)
                 return;
             
-            NetworkManager.Singleton.SceneManager.OnLoadComplete += OnLoadComplete;
-            NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += OnLoadEventCompleted;
-            NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
-            NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
+            // connectedClientIds = new List<ulong>(NetworkManager.Singleton.ConnectedClientsIds);
+            // foreach (var clientId in connectedClientIds)
+            //     SpawnPlayerObject(clientId);
+            
+            // NetworkManager.Singleton.SceneManager.OnLoadComplete += OnLoadComplete;
+            // NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += OnLoadEventCompleted;
+            // NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
+            // NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
         }
 
         private void OnLoadEventCompleted(string scenename, LoadSceneMode loadscenemode, List<ulong> clientscompleted, List<ulong> clientstimedout)
         {
-            Debug.Log("PlayerSpawner OnLoadEventCompleted");
-        }
-
-        private void OnLoadComplete(ulong clientid, string scenename, LoadSceneMode loadscenemode)
-        {
-            Debug.Log("PlayerSpawner OnLoadComplete");
-            
+            Debug.LogWarning("PlayerSpawner OnLoadEventCompleted");
             connectedClientIds = new List<ulong>(NetworkManager.Singleton.ConnectedClientsIds);
             foreach (var clientId in connectedClientIds)
                 SpawnPlayerObject(clientId);
+        }
+
+        private void OnLoadComplete(ulong clientId, string scenename, LoadSceneMode loadscenemode)
+        {
+            Debug.LogWarning($"PlayerSpawner OnLoadComplete. ClientId: {clientId}");
+            
+            // connectedClientIds = new List<ulong>(NetworkManager.Singleton.ConnectedClientsIds);
+            // foreach (var clientId in connectedClientIds)
+            // SpawnPlayerObject(clientId);
         }
 
         private void OnClientConnected(ulong clientId)
         {
             Debug.Log("ClientConnected");
             connectedClientIds = new List<ulong>(NetworkManager.Singleton.ConnectedClientsIds);
-            SpawnPlayerObject(clientId);
+            // SpawnPlayerObject(clientId);
         }
         
         private void OnClientDisconnected(ulong clientId)
@@ -66,7 +73,15 @@ namespace Shakalaka
 
         public override void OnNetworkSpawn()
         {
-            Debug.Log("PlayerSpawner OnNetworkSpawn");
+            Debug.LogWarning("PlayerSpawner OnNetworkSpawn");
+            
+            if (!IsServer)
+                return;
+            
+            NetworkManager.Singleton.SceneManager.OnLoadComplete += OnLoadComplete;
+            NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += OnLoadEventCompleted;
+            NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
+            NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
         }
 
         private void SpawnPlayerObject(ulong clientId)

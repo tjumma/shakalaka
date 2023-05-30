@@ -5,7 +5,7 @@ using VContainer.Unity;
 
 namespace Shakalaka
 {
-    public class CardSpawner : NetworkBehaviour
+    public class CardSpawner : MonoBehaviour
     {
         [SerializeField] private CardsPile playerHand;
         [SerializeField] private CardsPile enemyHand;

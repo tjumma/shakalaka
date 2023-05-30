@@ -26,6 +26,7 @@ namespace Shakalaka
         public override void OnNetworkSpawn()
         {
             Debug.Log($"NetworkPlayer OnNetworkSpawn. OwnerClientId: {OwnerClientId}");
+            GameScope.Instance.Container.Inject(this);
         }
 
         private void Update()

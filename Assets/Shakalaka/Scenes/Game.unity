@@ -365,7 +365,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1430807370}
   - component: {fileID: 1430807371}
-  - component: {fileID: 1430807372}
   m_Layer: 0
   m_Name: CardSpawner
   m_TagString: Untagged
@@ -404,25 +403,6 @@ MonoBehaviour:
   enemyHand: {fileID: 2069065218}
   cardPrefab: {fileID: 5086913239241074552, guid: 632ce1a87eada2c4382b837d1a8bb49a,
     type: 3}
---- !u!114 &1430807372
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1430807369}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 302988937
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 0
-  ActiveSceneSynchronization: 1
-  SceneMigrationSynchronization: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!1 &1476851794
 GameObject:
   m_ObjectHideFlags: 0
@@ -610,7 +590,6 @@ MonoBehaviour:
   bluePlayerPrefab: {fileID: 5504481461898199000, guid: ce06cb621ff9fc84fbcd226e3d7a622e,
     type: 3}
   connectedClientIds: 
-  cardSpawner: {fileID: 1430807371}
 --- !u!1 &1740064849
 GameObject:
   m_ObjectHideFlags: 0

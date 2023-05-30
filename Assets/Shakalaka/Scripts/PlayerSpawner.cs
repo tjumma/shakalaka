@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using VContainer;
 using VContainer.Unity;
 
@@ -27,14 +28,25 @@ namespace Shakalaka
 
             if (!IsServer)
                 return;
+            
+            NetworkManager.Singleton.SceneManager.OnLoadComplete += OnLoadComplete;
+            NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += OnLoadEventCompleted;
+            NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
+            NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
+        }
 
+        private void OnLoadEventCompleted(string scenename, LoadSceneMode loadscenemode, List<ulong> clientscompleted, List<ulong> clientstimedout)
+        {
+            Debug.Log("PlayerSpawner OnLoadEventCompleted");
+        }
+
+        private void OnLoadComplete(ulong clientid, string scenename, LoadSceneMode loadscenemode)
+        {
+            Debug.Log("PlayerSpawner OnLoadComplete");
+            
             connectedClientIds = new List<ulong>(NetworkManager.Singleton.ConnectedClientsIds);
             foreach (var clientId in connectedClientIds)
                 SpawnPlayerObject(clientId);
-
-
-            NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
-            NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
         }
 
         private void OnClientConnected(ulong clientId)

@@ -5,7 +5,7 @@ using VContainer.Unity;
 
 namespace Shakalaka
 {
-    public class GameScope : LifetimeScope
+    public class GameScope : SingletonScope<GameScope>
     {
         [SerializeField] private ServerBoard serverBoard;
         [SerializeField] private PlayerSpawner playerSpawner;
@@ -22,12 +22,6 @@ namespace Shakalaka
         private void Start()
         {
             Debug.Log("GameScope Start");
-
-            if (!NetworkManager.Singleton.IsServer)
-            {
-                var localPlayer = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<NetworkPlayer>();
-                Container.Inject(localPlayer);
-            }
         }
     }
 }

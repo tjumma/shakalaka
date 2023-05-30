@@ -157,11 +157,11 @@ namespace Shakalaka
                     {
                         case ConnectionRole.Server:
                             NetworkManager.Singleton.StartServer();
-                            NetworkManager.Singleton.SceneManager.LoadScene("Game", LoadSceneMode.Single);
+                            NetworkManager.Singleton.SceneManager.LoadScene("PreGame", LoadSceneMode.Single);
                             break;
                         case ConnectionRole.Host:
                             NetworkManager.Singleton.StartHost();
-                            NetworkManager.Singleton.SceneManager.LoadScene("Game", LoadSceneMode.Single);
+                            NetworkManager.Singleton.SceneManager.LoadScene("PreGame", LoadSceneMode.Single);
                             break;
                         case ConnectionRole.Client:
                             NetworkManager.Singleton.StartClient();
@@ -175,7 +175,7 @@ namespace Shakalaka
                     {
                         case ConnectionRole.Host:
                             await _relay.CreateRelay();
-                            NetworkManager.Singleton.SceneManager.LoadScene("Game", LoadSceneMode.Single);
+                            NetworkManager.Singleton.SceneManager.LoadScene("PreGame", LoadSceneMode.Single);
                             break;
                         case ConnectionRole.Client:
                             await _relay.JoinRelay(relayCode);

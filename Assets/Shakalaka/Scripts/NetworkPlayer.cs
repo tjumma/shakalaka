@@ -8,11 +8,14 @@ namespace Shakalaka
     public class NetworkPlayer : NetworkBehaviour
     {
         private ServerBoard _serverBoard;
+        private CardSpawner _cardSpawner;
 
         [Inject]
-        public void Construct(ServerBoard serverBoard)
+        public void Construct(ServerBoard serverBoard, CardSpawner cardSpawner)
         {
+            Debug.Log("NetworkPlayer Construct");
             _serverBoard = serverBoard;
+            _cardSpawner = cardSpawner;
         }
         
         private void Start()
@@ -32,27 +35,29 @@ namespace Shakalaka
             
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                RequestMySecretIntServerRpc(new ServerRpcParams());
+                RequestPlayerHandServerRpc(new ServerRpcParams());
             }
         }
 
         [ServerRpc]
-        private void RequestMySecretIntServerRpc(ServerRpcParams serverRpcParams)
+        private void RequestPlayerHandServerRpc(ServerRpcParams serverRpcParams)
         {
             ulong senderClientId = serverRpcParams.Receive.SenderClientId;
-            Debug.Log($"RequestMySecretIntServerRpc. SenderClientId: {senderClientId}");
+            Debug.Log($"RequestPlayerHandServerRpc. SenderClientId: {senderClientId}");
 
-            var secretInt = _serverBoard.GetSecretIntForClient((int)senderClientId);
+            var playerHand = _serverBoard.GetPlayerHand(senderClientId);
 
             var clientRpcParams = new ClientRpcParams
                 { Send = new ClientRpcSendParams { TargetClientIds = new List<ulong> { senderClientId } } };
-            SendSecretIntClientRpc(secretInt, clientRpcParams);
+            SendPlayerHandClientRpc(playerHand, clientRpcParams);
         }
 
         [ClientRpc]
-        private void SendSecretIntClientRpc(int secretInt, ClientRpcParams rpsParams)
+        private void SendPlayerHandClientRpc(int[] playerHand, ClientRpcParams rpsParams)
         {
-            Debug.Log($"This will send secretInt only to requestor-owner: {secretInt}");
+            Debug.Log($"This will send player hand only to hand owner");
+
+            _cardSpawner.FillPlayerHand(playerHand);
         }
     }
 }

@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 1423237025}
   - component: {fileID: 1423237024}
   m_Layer: 0
-  m_Name: NetworkManager (1)
+  m_Name: NetworkManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -231,7 +231,7 @@ GameObject:
   - component: {fileID: 1539173206}
   - component: {fileID: 1539173205}
   m_Layer: 0
-  m_Name: Relay (1)
+  m_Name: Relay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -276,7 +276,7 @@ GameObject:
   - component: {fileID: 1662232511}
   - component: {fileID: 1662232510}
   m_Layer: 0
-  m_Name: EventSystem (1)
+  m_Name: EventSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -343,7 +343,7 @@ GameObject:
   - component: {fileID: 2065197971}
   - component: {fileID: 2065197972}
   m_Layer: 0
-  m_Name: AppScope (1)
+  m_Name: DedicatedServerScope
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -381,3 +381,4 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   relay: {fileID: 1539173205}
+  disconnectTimeoutMax: 15

@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using Unity.Services.Core;
@@ -14,7 +15,10 @@ namespace Shakalaka
     public class DedicatedServerScope : LifetimeScope
     {
         [SerializeField] private Relay relay;
+        [SerializeField] private float disconnectTimeoutMax;
+        
         private IServerQueryHandler _serverQueryHandler;
+        private Dictionary<ulong, float> _disconnectTimers;
 
         protected override void Configure(IContainerBuilder builder)
         {
@@ -31,6 +35,9 @@ namespace Shakalaka
 
             NetworkManager.Singleton.ConnectionApprovalCallback += OnConnectionApproval;
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
+            NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
+
+            _disconnectTimers = new Dictionary<ulong, float>();
 
             var initializationOptions = new InitializationOptions();
             initializationOptions.SetEnvironmentName("development");
@@ -118,11 +125,29 @@ namespace Shakalaka
                 _serverQueryHandler.CurrentPlayers = (ushort)NetworkManager.Singleton.ConnectedClientsIds.Count;
                 _serverQueryHandler.UpdateServerCheck();
             }
+
+            foreach (var idTimer in _disconnectTimers)
+            {
+                var timer = idTimer.Value;
+                timer -= Time.deltaTime;
+                if (timer <= 0f)
+                {
+                    Application.Quit();
+                }
+                _disconnectTimers[idTimer.Key] = timer;
+            }
         }
 
         private void OnClientConnected(ulong clientId)
         {
             Debug.Log($"OnClientConnected. ClientId: {clientId}");
+            _disconnectTimers.Remove(clientId);
+        }
+        
+        private void OnClientDisconnected(ulong clientId)
+        {
+            Debug.Log($"OnClientDisconnected. ClientId: {clientId}. END THE GAME SESSION HERE");
+            _disconnectTimers[clientId] = disconnectTimeoutMax;
         }
 
         private void OnConnectionApproval(NetworkManager.ConnectionApprovalRequest request,

@@ -17,6 +17,7 @@ namespace Shakalaka
         public Action RelayHostButtonClicked;
         public Action<string> RelayClientButtonClicked;
 
+        public Action MultiplayerFindMatchButtonClicked;
         public Action<string, ushort> MultiplayerJoinServerButtonClicked;
 
         private VisualElement _root;
@@ -40,6 +41,7 @@ namespace Shakalaka
         private Button _closePlayWithRelayPopupButton;
 
         private VisualElement _multiplayerPopup;
+        private Button _multiplayerFindMatchButton;
         private TextField _multiplayerServerIpField;
         private TextField _multiplayerServerPortField;
         private Button _multiplayerJoinServerButton;
@@ -68,6 +70,7 @@ namespace Shakalaka
             _closePlayWithRelayPopupButton = _playWithRelayPopup.Q<Button>("close-popup-button");
 
             _multiplayerPopup = _root.Q<VisualElement>("multiplayer-popup");
+            _multiplayerFindMatchButton = _multiplayerPopup.Q<Button>("find-match-button");
             _multiplayerServerIpField = _multiplayerPopup.Q<TextField>("server-ip-field");
             _multiplayerServerPortField = _multiplayerPopup.Q<TextField>("server-port-field");
             _multiplayerJoinServerButton = _multiplayerPopup.Q<Button>("server-join-button");
@@ -90,8 +93,15 @@ namespace Shakalaka
             _playWithRelayJoinButton.clicked += OnPlayWithRelayJoinButtonClicked;
             _closePlayWithRelayPopupButton.clicked += () => ClosePopup(_playWithRelayPopup);
 
+            _multiplayerFindMatchButton.clicked += OnMultiplayerFindMatchButtonClicked;
             _multiplayerJoinServerButton.clicked += OnMultiplayerJoinServerButtonClicked;
             _closeMultiplayerPopupButton.clicked += () => ClosePopup(_multiplayerPopup);
+        }
+        
+        private void OnMultiplayerFindMatchButtonClicked()
+        {
+            Debug.Log("FindMatch clicked");
+            MultiplayerFindMatchButtonClicked?.Invoke();
         }
 
         private void OnMultiplayerJoinServerButtonClicked()

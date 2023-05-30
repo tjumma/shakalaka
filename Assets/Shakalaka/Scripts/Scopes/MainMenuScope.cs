@@ -1,6 +1,11 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
+using Unity.Services.Authentication;
+using Unity.Services.Matchmaker;
+using Unity.Services.Matchmaker.Models;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using VContainer;
@@ -14,6 +19,10 @@ namespace Shakalaka
 
         private Authenticator _authenticator;
         private Relay _relay;
+
+        private CreateTicketResponse _createTicketResponse;
+        private float _pollTicketTimer;
+        private float _pollTicketTimerMax = 1.5f;
 
         protected override void Configure(IContainerBuilder builder)
         {
@@ -49,14 +58,88 @@ namespace Shakalaka
             ui.RelayClientButtonClicked += (relayCode) =>
                 TrySetupConnection(ConnectionType.Relay, ConnectionRole.Client, relayCode).Forget();
 
+            ui.MultiplayerFindMatchButtonClicked += () => OnMultiplayFindMatch().Forget();
             ui.MultiplayerJoinServerButtonClicked += OnMultiplayJoinServer;
+        }
+
+        void Update()
+        {
+            if (_createTicketResponse != null)
+            {
+                _pollTicketTimer -= Time.deltaTime;
+                if (_pollTicketTimer <= 0f)
+                {
+                    _pollTicketTimer = _pollTicketTimerMax;
+
+                    PollMatchmakerTicket().Forget();
+                }
+            }
+        }
+
+        private async UniTaskVoid PollMatchmakerTicket()
+        {
+            Debug.Log("Polling matchmaker ticket");
+
+            TicketStatusResponse ticketStatusResponse = await MatchmakerService.Instance.GetTicketAsync(_createTicketResponse.Id);
+
+            if (ticketStatusResponse == null)
+                return;
+
+            if (ticketStatusResponse.Type == typeof(MultiplayAssignment))
+            {
+                MultiplayAssignment multiplayAssignment = ticketStatusResponse.Value as MultiplayAssignment;
+                var multiplayAssignmentStatus = multiplayAssignment.Status;
+                Debug.Log($"MultiplayAssignment status: {multiplayAssignmentStatus}");
+
+                switch (multiplayAssignmentStatus)
+                {
+                    case MultiplayAssignment.StatusOptions.Found:
+                        _createTicketResponse = null;
+                        Debug.Log($"MultiplayAssignment found. Ip: {multiplayAssignment.Ip}. Port: {multiplayAssignment.Port}");
+                        string ipv4Address = multiplayAssignment.Ip;
+                        ushort port = (ushort)multiplayAssignment.Port;
+                        NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData(ipv4Address, port);
+                        NetworkManager.Singleton.StartClient();
+                        break;
+                    case MultiplayAssignment.StatusOptions.InProgress:
+                        //continue polling
+                        break;
+                    case MultiplayAssignment.StatusOptions.Failed:
+                        _createTicketResponse = null;
+                        Debug.Log("MultiplayAssignment Failed!");
+                        break;
+                    case MultiplayAssignment.StatusOptions.Timeout:
+                        _createTicketResponse = null;
+                        Debug.Log("MultiplayAssignment Timeout!");
+                        break;
+                }
+            }
+        }
+
+        private async UniTaskVoid OnMultiplayFindMatch()
+        {
+            Debug.Log("Looking for match");
+            await _authenticator.Authenticate();
+
+            _createTicketResponse = await MatchmakerService.Instance.CreateTicketAsync(new List<Player>()
+            {
+                new Player(AuthenticationService.Instance.PlayerId, new MatchmakingPlayerData { Skill = 100 })
+            }, new CreateTicketOptions { QueueName = "default-queue" });
+
+            _pollTicketTimer = _pollTicketTimerMax;
+        }
+
+        [Serializable]
+        public class MatchmakingPlayerData
+        {
+            public int Skill;
         }
 
         private void OnMultiplayJoinServer(string ip, ushort port)
         {
             Debug.Log("Setting up Multiplay connection");
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData(ip, port);
-            Debug.Log(NetworkManager.Singleton.StartClient());
+            NetworkManager.Singleton.StartClient();
         }
 
         private async UniTaskVoid TrySetupConnection(ConnectionType connectionType, ConnectionRole connectionRole,
@@ -68,7 +151,8 @@ namespace Shakalaka
             switch (connectionType)
             {
                 case ConnectionType.Local:
-                    NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData($"127.0.0.1", (ushort)7777);
+                    NetworkManager.Singleton.GetComponent<UnityTransport>()
+                        .SetConnectionData($"127.0.0.1", (ushort)7777);
                     switch (connectionRole)
                     {
                         case ConnectionRole.Server:

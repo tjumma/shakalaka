@@ -98,7 +98,7 @@ namespace Shakalaka
             
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData(ipv4Address, port, "0.0.0.0");
             NetworkManager.Singleton.StartServer();
-            NetworkManager.Singleton.SceneManager.LoadScene("Game", LoadSceneMode.Single);
+            NetworkManager.Singleton.SceneManager.LoadScene("PreGame", LoadSceneMode.Single);
             await MultiplayService.Instance.ReadyServerForPlayersAsync();
         }
 
@@ -126,15 +126,17 @@ namespace Shakalaka
                 _serverQueryHandler.UpdateServerCheck();
             }
 
-            foreach (var idTimer in _disconnectTimers)
+            var disconnectedTimersIds = _disconnectTimers.Keys;
+
+            foreach (var id in disconnectedTimersIds)
             {
-                var timer = idTimer.Value;
+                var timer = _disconnectTimers[id];
                 timer -= Time.deltaTime;
                 if (timer <= 0f)
                 {
                     Application.Quit();
                 }
-                _disconnectTimers[idTimer.Key] = timer;
+                _disconnectTimers[id] = timer;
             }
         }
 

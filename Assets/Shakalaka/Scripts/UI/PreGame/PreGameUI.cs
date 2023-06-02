@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using Unity.Netcode;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Shakalaka
 {
     [RequireComponent(typeof(UIDocument))]
-    public class PreGameUI : MonoBehaviour
+    public class PreGameUI : NetworkBehaviour
     {
         [SerializeField] private UIDocument document;
         
@@ -17,7 +18,8 @@ namespace Shakalaka
             _playersConnectedLabel = _root.Q<Label>("players-connected-label");
         }
 
-        public void SetPlayersConnected(int playersCount)
+        [ClientRpc]
+        public void SetPlayersConnectedClientRpc(int playersCount)
         {
             _playersConnectedLabel.text = $"Players connected: {playersCount}";
         }

@@ -9,7 +9,7 @@ namespace Shakalaka
     public class PreGameScope : LifetimeScope
     {
         [SerializeField] private PreGameUI ui;
-        
+
         protected override void Configure(IContainerBuilder builder)
         {
             Debug.Log("PreGameScope Configure");
@@ -28,8 +28,8 @@ namespace Shakalaka
             }
             else
             {
-                ui.SetPlayersConnected(NetworkManager.Singleton.ConnectedClients.Count);
-            
+                ui.SetPlayersConnectedClientRpc(NetworkManager.Singleton.ConnectedClients.Count);
+
                 NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
                 NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
             }
@@ -37,21 +37,23 @@ namespace Shakalaka
 
         private void OnClientDisconnected(ulong clientId)
         {
+            if (!NetworkManager.Singleton.IsServer) return;
+            
             Debug.Log($"PreGame OnClientDisconnected. ClientId: {clientId}");
-            ui.SetPlayersConnected(NetworkManager.Singleton.ConnectedClients.Count);
+
+            ui.SetPlayersConnectedClientRpc(NetworkManager.Singleton.ConnectedClients.Count);
         }
 
         private void OnClientConnected(ulong clientId)
         {
+            if (!NetworkManager.Singleton.IsServer) return;
+            
             Debug.Log($"PreGame OnClientConnected. ClientId: {clientId}");
+
+            ui.SetPlayersConnectedClientRpc(NetworkManager.Singleton.ConnectedClients.Count);
+                
             if (NetworkManager.Singleton.ConnectedClients.Count == 3)
-            {
                 NetworkManager.Singleton.SceneManager.LoadScene("Game", LoadSceneMode.Single);
-            }
-            else
-            {
-                ui.SetPlayersConnected(NetworkManager.Singleton.ConnectedClients.Count);
-            }
         }
     }
 }

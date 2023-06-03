@@ -22,7 +22,7 @@ namespace Shakalaka
             if (!NetworkManager.Singleton.IsServer)
                 return;
 
-            if (NetworkManager.Singleton.ConnectedClients.Count == 3)
+            if (NetworkManager.Singleton.ConnectedClients.Count == 2)
             {
                 NetworkManager.Singleton.SceneManager.LoadScene("Game", LoadSceneMode.Single);
             }
@@ -52,7 +52,7 @@ namespace Shakalaka
 
             ui.SetPlayersConnectedClientRpc(NetworkManager.Singleton.ConnectedClients.Count);
                 
-            if (NetworkManager.Singleton.ConnectedClients.Count == 3)
+            if (NetworkManager.Singleton.ConnectedClients.Count == 2)
                 NetworkManager.Singleton.SceneManager.LoadScene("Game", LoadSceneMode.Single);
         }
     }

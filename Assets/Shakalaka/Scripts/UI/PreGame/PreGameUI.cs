@@ -14,6 +14,9 @@ namespace Shakalaka
 
         private void Awake()
         {
+            if (document == null)
+                return;
+            
             _root = document.rootVisualElement;
             _playersConnectedLabel = _root.Q<Label>("players-connected-label");
         }
@@ -21,6 +24,9 @@ namespace Shakalaka
         [ClientRpc]
         public void SetPlayersConnectedClientRpc(int playersCount)
         {
+            if (_playersConnectedLabel == null)
+                return;
+            
             _playersConnectedLabel.text = $"Players connected: {playersCount}";
         }
     }

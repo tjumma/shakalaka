@@ -8,14 +8,14 @@ namespace Shakalaka
     public class NetworkPlayer : NetworkBehaviour
     {
         private ServerBoard _serverBoard;
-        private CardSpawner _cardSpawner;
+        private ClientBoardMVP _clientBoardMvp;
 
         [Inject]
-        public void Construct(ServerBoard serverBoard, CardSpawner cardSpawner)
+        public void Construct(ServerBoard serverBoard, ClientBoardMVP clientBoardMvp)
         {
             Debug.Log("NetworkPlayer Construct");
             _serverBoard = serverBoard;
-            _cardSpawner = cardSpawner;
+            _clientBoardMvp = clientBoardMvp;
         }
         
         private void Start()
@@ -36,29 +36,28 @@ namespace Shakalaka
             
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                RequestPlayerHandServerRpc(new ServerRpcParams());
+                RequestPlayerBoardServerRpc(new ServerRpcParams());
             }
         }
 
         [ServerRpc]
-        private void RequestPlayerHandServerRpc(ServerRpcParams serverRpcParams)
+        private void RequestPlayerBoardServerRpc(ServerRpcParams serverRpcParams)
         {
             ulong senderClientId = serverRpcParams.Receive.SenderClientId;
-            Debug.Log($"RequestPlayerHandServerRpc. SenderClientId: {senderClientId}");
-
-            var playerHand = _serverBoard.GetPlayerHand(senderClientId);
-
+            Debug.Log($"RequestPlayerBoardServerRpc. SenderClientId: {senderClientId}");
+            
+            var playerBoard = _serverBoard.GetPlayerBoard(senderClientId);
             var clientRpcParams = new ClientRpcParams
                 { Send = new ClientRpcSendParams { TargetClientIds = new List<ulong> { senderClientId } } };
-            SendPlayerHandClientRpc(playerHand, clientRpcParams);
+            SendPlayerBoardClientRpc(playerBoard, clientRpcParams);
         }
-
+        
         [ClientRpc]
-        private void SendPlayerHandClientRpc(int[] playerHand, ClientRpcParams rpsParams)
+        public void SendPlayerBoardClientRpc(ClientBoard clientBoard, ClientRpcParams rpsParams)
         {
-            Debug.Log($"This will send player hand only to hand owner");
-
-            _cardSpawner.FillPlayerHand(playerHand);
+            Debug.Log($"This will send specific PlayerBoard to each player");
+            
+            _clientBoardMvp.SetupBoard(clientBoard);
         }
     }
 }

@@ -43,6 +43,14 @@ namespace Shakalaka
         {
             Debug.LogWarning("PlayerSpawner OnLoadEventCompleted");
             connectedClientIds = new List<ulong>(NetworkManager.Singleton.ConnectedClientsIds);
+            // foreach (var clientId in connectedClientIds)
+            //     SpawnPlayerObject(clientId);
+        }
+
+        public void SpawnPlayers()
+        {
+            Debug.LogWarning("PlayerSpawner SpawnPlayers");
+            connectedClientIds = new List<ulong>(NetworkManager.Singleton.ConnectedClientsIds);
             foreach (var clientId in connectedClientIds)
                 SpawnPlayerObject(clientId);
         }
@@ -78,7 +86,7 @@ namespace Shakalaka
             if (!IsServer)
                 return;
             
-            NetworkManager.Singleton.SceneManager.OnLoadComplete += OnLoadComplete;
+            // NetworkManager.Singleton.SceneManager.OnLoadComplete += OnLoadComplete;
             NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += OnLoadEventCompleted;
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
             NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;

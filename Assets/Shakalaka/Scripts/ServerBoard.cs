@@ -11,17 +11,50 @@ namespace Shakalaka
 
         public override void OnNetworkSpawn()
         {
+            if (!IsServer)
+                return;
+            
             Debug.Log($"ServerBoard OnNetworkSpawn. OwnerClientId: {OwnerClientId}");
 
-            NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += OnLoadEventCompleted;
+            // NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += OnLoadEventCompleted;
         }
 
-        private void OnLoadEventCompleted(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
+        // private void OnLoadEventCompleted(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
+        // {
+        //     if (!IsServer)
+        //         return;
+        //     
+        //     Debug.Log($"OnLoadEventCompleted. ClientsConnected: {NetworkManager.Singleton.ConnectedClientsIds.Count}");
+        //     
+        //     GenerateServerBoard();
+        //     SendServerBoardToClients();
+        // }
+        
+        public void GenerateAndSendBoard()
         {
             if (!IsServer)
                 return;
             
-            Debug.Log($"OnLoadEventCompleted. ClientsConnected: {NetworkManager.Singleton.ConnectedClientsIds.Count}");
+            GenerateServerBoard();
+            SendServerBoardToClients();
+        }
+
+        private void SendServerBoardToClients()
+        {
+            foreach (var client in NetworkManager.Singleton.ConnectedClients)
+            {
+                var clientId = client.Key;
+                var clientPlayer = client.Value.PlayerObject.gameObject.GetComponent<NetworkPlayer>();
+                
+                var playerBoard = GetPlayerBoard(clientId);
+                var clientRpcParams = new ClientRpcParams
+                    { Send = new ClientRpcSendParams { TargetClientIds = new List<ulong> { clientId } } };
+                clientPlayer.SendPlayerBoardClientRpc(playerBoard, clientRpcParams);
+            }
+        }
+
+        private void GenerateServerBoard()
+        {
             var connectedClientIds = NetworkManager.Singleton.ConnectedClientsIds;
             
             var allCardTypes = new List<int>();
@@ -48,9 +81,43 @@ namespace Shakalaka
             }
         }
 
-        public int[] GetPlayerHand(ulong clientId)
+        public ClientBoard GetPlayerBoard(ulong clientId)
         {
-            return playerHandsByClientId[clientId];
+            if (!TryGetOpponentsId(clientId, out var opponentId))
+                Debug.LogError($"There is no opponent for client {clientId}!");
+            
+            var playerBoard = new ClientBoard
+            {
+                playerPile = new Pile
+                {
+                    visibility = PileVisibility.VisibleForPlayer,
+                    cards = playerHandsByClientId[clientId]
+                },
+                opponentPile = new Pile()
+                {
+                    visibility = PileVisibility.InvisibleForPlayer,
+                    cards = new int[playerHandsByClientId[opponentId].Length]
+                }
+            };
+            
+            return playerBoard;
+        }
+
+        private bool TryGetOpponentsId(ulong clientId, out ulong opponentId)
+        {
+            var connectedClientIds = NetworkManager.Singleton.ConnectedClientsIds;
+
+            foreach (var id in connectedClientIds)
+            {
+                if (id != clientId)
+                {
+                    opponentId = id;
+                    return true;
+                }
+            }
+
+            opponentId = ulong.MaxValue;
+            return false;
         }
     }
 }

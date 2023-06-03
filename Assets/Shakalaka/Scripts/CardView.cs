@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Shakalaka
 {
-    public class Card : MonoBehaviour
+    public class CardView : MonoBehaviour
     {
         [SerializeField] private TMP_Text cardTypeText;
         

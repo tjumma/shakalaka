@@ -47,7 +47,7 @@ namespace Shakalaka
                 joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
                 Debug.Log($"Join code: {joinCode}");
 
-                RelayServerData relayServerData = new (allocation, "dtls");
+                RelayServerData relayServerData = new (allocation, "wss");
                 NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
                 NetworkManager.Singleton.StartHost();
             }
@@ -67,7 +67,7 @@ namespace Shakalaka
                 Debug.Log($"Joining Relay with code: {joinCode}");
                 JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
 
-                RelayServerData relayServerData = new (joinAllocation, "dtls");
+                RelayServerData relayServerData = new (joinAllocation, "wss");
                 NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
                 NetworkManager.Singleton.StartClient();
             }

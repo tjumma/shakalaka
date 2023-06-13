@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿#if DEDICATED_SERVER
+
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
@@ -95,7 +97,7 @@ namespace Shakalaka
 
             string ipv4Address = "0.0.0.0";
             ushort port = serverConfig.Port;
-            
+
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData(ipv4Address, port, "0.0.0.0");
             NetworkManager.Singleton.StartServer();
             NetworkManager.Singleton.SceneManager.LoadScene("PreGame", LoadSceneMode.Single);
@@ -161,4 +163,6 @@ namespace Shakalaka
             response.CreatePlayerObject = false;
         }
     }
+
 }
+#endif

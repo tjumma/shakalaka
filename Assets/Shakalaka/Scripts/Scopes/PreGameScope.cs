@@ -41,7 +41,8 @@ namespace Shakalaka
             
             Debug.Log($"PreGame OnClientDisconnected. ClientId: {clientId}");
 
-            ui.SetPlayersConnectedClientRpc(NetworkManager.Singleton.ConnectedClients.Count);
+            if (ui != null)
+                ui.SetPlayersConnectedClientRpc(NetworkManager.Singleton.ConnectedClients.Count);
         }
 
         private void OnClientConnected(ulong clientId)

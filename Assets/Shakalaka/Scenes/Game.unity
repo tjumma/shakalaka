@@ -613,6 +613,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8a00e44c4a752041af6111669365475, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayerControlled: 0
   liftBeforeAdding: 1
   faceDown: 1
   height: -0.5
@@ -1276,6 +1277,7 @@ MonoBehaviour:
   serverBoard: {fileID: 489955846}
   playerSpawner: {fileID: 1559733852}
   clientBoardMvp: {fileID: 423384812}
+  cardSelector: {fileID: 1409421168}
 --- !u!1 &2069065216
 GameObject:
   m_ObjectHideFlags: 0
@@ -1305,6 +1307,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8a00e44c4a752041af6111669365475, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayerControlled: 0
   liftBeforeAdding: 1
   faceDown: 1
   height: 0.25
@@ -1375,6 +1378,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8a00e44c4a752041af6111669365475, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayerControlled: 1
   liftBeforeAdding: 1
   faceDown: 0
   height: 0.25
@@ -1478,6 +1482,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8a00e44c4a752041af6111669365475, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayerControlled: 0
   liftBeforeAdding: 1
   faceDown: 0
   height: -0.5

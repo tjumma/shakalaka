@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class CardsPile : MonoBehaviour
 {
+	public bool isPlayerControlled;
 	public bool liftBeforeAdding;
 	public bool faceDown = true;
 	public float height = 0.5f;

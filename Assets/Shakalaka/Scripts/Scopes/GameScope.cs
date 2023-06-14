@@ -12,6 +12,7 @@ namespace Shakalaka
         [SerializeField] private ServerBoard serverBoard;
         [SerializeField] private PlayerSpawner playerSpawner;
         [SerializeField] private ClientBoardMVP clientBoardMvp;
+        [SerializeField] private CardSelector cardSelector;
         
         protected override void Configure(IContainerBuilder builder)
         {
@@ -19,6 +20,7 @@ namespace Shakalaka
             builder.RegisterComponent(serverBoard);
             builder.RegisterComponent(playerSpawner);
             builder.RegisterComponent(clientBoardMvp);
+            builder.RegisterComponent(cardSelector);
         }
 
         private void Start()

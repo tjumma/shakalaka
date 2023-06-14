@@ -6,8 +6,17 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Shakalaka/Scenes/Cards.unity
-    guid: 93e4ccf5b86dc2741b9eff1511d32273
+    path: Assets/Shakalaka/Scenes/_Startup.unity
+    guid: 49bdca569670df84281f1756b6dedb2c
+  - enabled: 1
+    path: Assets/Shakalaka/Scenes/MainMenu.unity
+    guid: 72f34c919d647c4438ad19b0cbc1012c
+  - enabled: 1
+    path: Assets/Shakalaka/Scenes/PreGame.unity
+    guid: e87603f7a47214c40a64b99cdb6b6c95
+  - enabled: 1
+    path: Assets/Shakalaka/Scenes/Game.unity
+    guid: 601b285a3f8680049ae13d2135496987
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 5b7edc962822f7f44821129b7caff035,
       type: 2}

@@ -47,10 +47,14 @@ namespace Shakalaka
         
         private void TrySelectCard(Vector2 touchPosition, float time)
         {
+            if (Camera.main == null)
+                return;
+                
             Ray ray = Camera.main.ScreenPointToRay(touchPosition);
 
             if (Physics.Raycast(ray, out var hit, Mathf.Infinity, cardMask))
             {
+                Debug.Log($"<color=green>Card selected!</color>");
                 _isCardSelected = true;
                 // Destroy(hit.collider.gameObject);
                 _selectedCard = hit.collider.gameObject;
@@ -59,7 +63,7 @@ namespace Shakalaka
                 
                 _selectedCard.transform.SetParent(selectedCardParent, false);
                 _selectedCard.transform.localPosition = Vector3.zero;
-                _selectedCard.transform.localRotation = Quaternion.Euler(90, 0,0);
+                _selectedCard.transform.localRotation = Quaternion.Euler(0, _selectedCardOriginPile.faceDown? 0 : 180,0);
             }
         }
         

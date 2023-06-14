@@ -1,19 +1,44 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Shakalaka
 {
     public class CardSelector : MonoBehaviour
     {
+        [SerializeField] private Transform selectedCardParent;
         [SerializeField] private InputManager inputManager;
+
+        private Plane _selectedCardPilePlane;
+        private GameObject _selectedCard;
+
+        private bool _isCardSelected;
 
         private void OnEnable()
         {
-            inputManager.OnFingerDown += TrySelectCard;
+            inputManager.OnStartTouch += TrySelectCard;
+            inputManager.OnEndTouch += TryReleaseCard;
         }
         private void OnDisable()
         {
-            inputManager.OnFingerDown -= TrySelectCard;
+            inputManager.OnStartTouch -= TrySelectCard;
+            inputManager.OnEndTouch -= TryReleaseCard;
+        }
+
+        private void Start()
+        {
+            _selectedCardPilePlane = new Plane(Vector3.down, 1f);
+        }
+
+        private void Update()
+        {
+            if (!_isCardSelected)
+                return;
+            
+            Ray ray = Camera.main.ScreenPointToRay(inputManager.TouchPosition);
+
+            if (_selectedCardPilePlane.Raycast(ray, out var distance))
+            {
+                selectedCardParent.transform.position = ray.GetPoint(distance);
+            }
         }
         
         private void TrySelectCard(Vector2 touchPosition, float time)
@@ -22,8 +47,30 @@ namespace Shakalaka
 
             if (Physics.Raycast(ray, out var hit))
             {
-                Destroy(hit.collider.gameObject);
+                _isCardSelected = true;
+                // Destroy(hit.collider.gameObject);
+                _selectedCard = hit.collider.gameObject;
+                var originPile = hit.collider.gameObject.GetComponentInParent<CardsPile>();
+                originPile.Remove(_selectedCard);
+                
+                _selectedCard.transform.SetParent(selectedCardParent, false);
+                _selectedCard.transform.localPosition = Vector3.zero;
+                _selectedCard.transform.localRotation = Quaternion.Euler(90, 0,0);
             }
+        }
+        
+        private void TryReleaseCard(Vector2 touchPosition, float time)
+        {
+            if (_selectedCard == null)
+                return;
+            
+            var cardPos = _selectedCard.transform.position;
+            cardPos.y = 0f;
+            _selectedCard.transform.SetParent(null);
+            _selectedCard.transform.position = cardPos;
+            _selectedCard = null;
+            
+            _isCardSelected = false;
         }
     }
 }

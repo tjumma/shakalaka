@@ -11,6 +11,8 @@ namespace Shakalaka
         
         public Action<Vector2, float> OnStartTouch;
         public Action<Vector2, float> OnEndTouch;
+
+        public Vector2 TouchPosition;
         
         private TouchControls _touchControls;
 
@@ -37,6 +39,11 @@ namespace Shakalaka
             _touchControls.Touch.TouchPress.started -= StartTouch;
             _touchControls.Touch.TouchPress.canceled -= EndTouch;
             UnityEngine.InputSystem.EnhancedTouch.Touch.onFingerDown -= FingerDown;
+        }
+
+        private void Update()
+        {
+            TouchPosition = _touchControls.Touch.TouchPosition.ReadValue<Vector2>();
         }
 
         private void FingerDown(Finger finger)

@@ -71,7 +71,7 @@ namespace Shakalaka
                 {
                     if (_hostLobby == null) //host already joined relay
                     {
-                        relay.JoinRelay(_joinedLobby.Data["RelayCode"].Value);
+                        await relay.JoinRelay(_joinedLobby.Data["RelayCode"].Value);
                         _joinedLobby = null;
                     }
                 }

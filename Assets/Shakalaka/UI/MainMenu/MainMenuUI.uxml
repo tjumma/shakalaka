@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/Shakalaka/UI/MainMenu/MainMenuUI.uss?fileID=7433441132597879392&amp;guid=af6a03e4b02c7e141b913e9a36792192&amp;type=3#MainMenuUI" />
     <ui:Label tabindex="-1" text="PlayerId" display-tooltip-when-elided="true" name="player-id-label" style="width: 50%; align-self: flex-end; -unity-text-align: upper-right; font-size: 30px; color: rgb(255, 255, 255); position: absolute;" />
-    <ui:VisualElement name="main-menu-buttons" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); justify-content: flex-start; height: 70%; position: absolute; width: 40%; align-self: center; top: 15%; bottom: 15%;">
+    <ui:VisualElement name="main-menu-buttons" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); justify-content: flex-start; height: 70%; position: absolute; width: 100%; align-self: center; top: 15%; bottom: 15%;">
         <ui:Button text="Play locally" display-tooltip-when-elided="true" name="play-locally-button" class="main-menu-button" />
         <ui:Button text="Play with Relay" display-tooltip-when-elided="true" name="play-with-relay-button" class="main-menu-button" />
         <ui:Button text="Multiplayer" display-tooltip-when-elided="true" name="multiplayer-button" class="main-menu-button" />

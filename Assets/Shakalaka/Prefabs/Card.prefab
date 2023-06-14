@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7536664179101783769}
   - component: {fileID: 1138357168793763955}
   - component: {fileID: 8831263613410119222}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Front
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 7620271033167678999}
   - component: {fileID: 6173382410522879655}
   - component: {fileID: 1791590092154684490}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Card
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -164,7 +164,7 @@ GameObject:
   - component: {fileID: 7325433989021540692}
   - component: {fileID: 743925474413755612}
   - component: {fileID: 2536198112095859438}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -247,7 +247,7 @@ GameObject:
   - component: {fileID: 2827298678800652677}
   - component: {fileID: 6858438234364214293}
   - component: {fileID: 7867735904981861834}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CardType
   m_TagString: Untagged
   m_Icon: {fileID: 0}

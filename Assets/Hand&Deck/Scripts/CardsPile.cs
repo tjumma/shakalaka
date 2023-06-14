@@ -59,21 +59,23 @@ public class CardsPile : MonoBehaviour
 		OnCountChanged?.Invoke(cards.Count);
 	}
 
-	public void Remove(GameObject card)
+	public int Remove(GameObject card)
 	{
 		if (!cards.Contains(card))
-			return;
+			return -1;
 
 		Transform cardHolder = cardsHolders[cards.IndexOf(card)];
 		cardsHolders.Remove(cardHolder);
 		Destroy(cardHolder.gameObject);
 
+		int cardIndex = cards.IndexOf(card);
 		cards.Remove(card);
 		card.transform.DOKill();
 		card.transform.SetParent(null);
 		updatePositions = true;
 
 		OnCountChanged?.Invoke(cards.Count);
+		return cardIndex;
 	}
 
 	public void RemoveAt(int index)

@@ -6,9 +6,13 @@ namespace Shakalaka
     {
         [SerializeField] private Transform selectedCardParent;
         [SerializeField] private InputManager inputManager;
+        [SerializeField] private LayerMask cardMask;
+        [SerializeField] private LayerMask playingAreaMask;
 
         private Plane _selectedCardPilePlane;
         private GameObject _selectedCard;
+        private CardsPile _selectedCardOriginPile;
+        private int? _selectedCardPreviousIndex;
 
         private bool _isCardSelected;
 
@@ -45,13 +49,13 @@ namespace Shakalaka
         {
             Ray ray = Camera.main.ScreenPointToRay(touchPosition);
 
-            if (Physics.Raycast(ray, out var hit))
+            if (Physics.Raycast(ray, out var hit, Mathf.Infinity, cardMask))
             {
                 _isCardSelected = true;
                 // Destroy(hit.collider.gameObject);
                 _selectedCard = hit.collider.gameObject;
-                var originPile = hit.collider.gameObject.GetComponentInParent<CardsPile>();
-                originPile.Remove(_selectedCard);
+                _selectedCardOriginPile = hit.collider.gameObject.GetComponentInParent<CardsPile>();
+                _selectedCardPreviousIndex = _selectedCardOriginPile.Remove(_selectedCard);
                 
                 _selectedCard.transform.SetParent(selectedCardParent, false);
                 _selectedCard.transform.localPosition = Vector3.zero;
@@ -64,12 +68,28 @@ namespace Shakalaka
             if (_selectedCard == null)
                 return;
             
-            var cardPos = _selectedCard.transform.position;
-            cardPos.y = 0f;
-            _selectedCard.transform.SetParent(null);
-            _selectedCard.transform.position = cardPos;
-            _selectedCard = null;
+            Ray ray = Camera.main.ScreenPointToRay(touchPosition);
+
+            if (Physics.Raycast(ray, out var hit, Mathf.Infinity, playingAreaMask))
+            {
+                var newCardsPile = hit.transform.gameObject.GetComponentInParent<CardsPile>();
+                
+                newCardsPile.Add(_selectedCard);
+                
+                // var cardPos = _selectedCard.transform.position;
+                // cardPos.y = 0f;
+                // _selectedCard.transform.SetParent(null);
+                // _selectedCard.transform.position = cardPos;
+            }
+            else
+            {
+                if (_selectedCardPreviousIndex != null)
+                    _selectedCardOriginPile.Add(_selectedCard, _selectedCardPreviousIndex.Value);
+            }
             
+            _selectedCard = null;
+            _selectedCardOriginPile = null;
+            _selectedCardPreviousIndex = null;
             _isCardSelected = false;
         }
     }

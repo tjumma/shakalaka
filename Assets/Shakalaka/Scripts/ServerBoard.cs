@@ -15,21 +15,8 @@ namespace Shakalaka
                 return;
             
             Debug.Log($"ServerBoard OnNetworkSpawn. OwnerClientId: {OwnerClientId}");
-
-            // NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += OnLoadEventCompleted;
         }
 
-        // private void OnLoadEventCompleted(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
-        // {
-        //     if (!IsServer)
-        //         return;
-        //     
-        //     Debug.Log($"OnLoadEventCompleted. ClientsConnected: {NetworkManager.Singleton.ConnectedClientsIds.Count}");
-        //     
-        //     GenerateServerBoard();
-        //     SendServerBoardToClients();
-        // }
-        
         public void GenerateAndSendBoard()
         {
             if (!IsServer)

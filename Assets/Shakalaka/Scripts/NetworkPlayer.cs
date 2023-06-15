@@ -26,7 +26,11 @@ namespace Shakalaka
         public override void OnNetworkSpawn()
         {
             Debug.Log($"NetworkPlayer OnNetworkSpawn. OwnerClientId: {OwnerClientId}");
-            GameScope.Instance.RegisterPlayer(this);
+            
+            if (IsLocalPlayer)
+                GameScope.Instance.RegisterPlayer(this);
+            
+            GameScope.Instance.Container.Inject(this);
         }
 
         [ServerRpc]
@@ -49,9 +53,13 @@ namespace Shakalaka
             _clientBoardMvp.SetupBoard(clientBoardData);
         }
 
-        public void RequestCardMove()
+        [ServerRpc]
+        public void RequestCardMoveFromHandToAreaServerRpc(int cardIndex, ServerRpcParams serverRpcParams)
         {
-            Debug.Log("Requesting card move");
+            ulong senderClientId = serverRpcParams.Receive.SenderClientId;
+            Debug.Log($"RequestCardMoveServerRpc. SenderClientId: {senderClientId}");
+
+            _serverBoard.ProcessCardMoveFromHandToArea(cardIndex, senderClientId);
         }
     }
 }

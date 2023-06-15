@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.Netcode;
+using UnityEngine;
 using VContainer;
 
 namespace Shakalaka
@@ -55,23 +56,21 @@ namespace Shakalaka
         
         private void TrySelectCard(Vector2 touchPosition, float time)
         {
-            if (Camera.main == null)
-                return;
-                
-            Ray ray = Camera.main.ScreenPointToRay(touchPosition);
+            Ray ray = _mainCamera.ScreenPointToRay(touchPosition);
 
             if (Physics.Raycast(ray, out var hit, Mathf.Infinity, cardMask))
             {
-                _isCardSelected = true;
-                // Destroy(hit.collider.gameObject);
-                _selectedCard = hit.collider.gameObject;
-                _selectedCardOriginPile = _selectedCard.GetComponentInParent<CardsPile>();
+                var selectedCard = hit.collider.gameObject;
+                var selectedCardOriginPile = selectedCard.GetComponentInParent<CardsPile>();
 
-                if (!_selectedCardOriginPile.isPlayerControlled)
+                if (!selectedCardOriginPile.isPlayerControlled)
                     return;
                 
                 Debug.Log($"<color=green>Player card selected!</color>");
                 
+                _isCardSelected = true;
+                _selectedCard = selectedCard;
+                _selectedCardOriginPile = selectedCardOriginPile;
                 _selectedCardPreviousIndex = _selectedCardOriginPile.Remove(_selectedCard);
                 _selectedCard.transform.SetParent(selectedCardParent, false);
                 _selectedCard.transform.localPosition = Vector3.zero;
@@ -92,7 +91,7 @@ namespace Shakalaka
                 
                 newCardsPile.Add(_selectedCard);
 
-                GameScope.Instance.Player.RequestCardMove();
+                GameScope.Instance.Player.RequestCardMoveFromHandToAreaServerRpc(_selectedCardPreviousIndex.Value, new ServerRpcParams());
 
                 // var cardPos = _selectedCard.transform.position;
                 // cardPos.y = 0f;

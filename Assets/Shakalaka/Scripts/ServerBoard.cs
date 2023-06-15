@@ -8,7 +8,8 @@ namespace Shakalaka
 {
     public class ServerBoard : NetworkBehaviour
     {
-        private Dictionary<ulong, int[]> playerHandsByClientId;
+        private Dictionary<ulong, List<int>> _playerHandsByClientId;
+        private Dictionary<ulong, List<int>> _playerAreasByClientId;
 
         public override void OnNetworkSpawn()
         {
@@ -24,10 +25,10 @@ namespace Shakalaka
                 return;
             
             GenerateServerBoard();
-            SendServerBoardToClients();
+            SendBoardToClients();
         }
 
-        private void SendServerBoardToClients()
+        private void SendBoardToClients()
         {
             foreach (var client in NetworkManager.Singleton.ConnectedClients)
             {
@@ -53,19 +54,21 @@ namespace Shakalaka
                 allCardTypes.Add(c);
             }
 
-            playerHandsByClientId = new Dictionary<ulong, int[]>();
+            _playerHandsByClientId = new Dictionary<ulong, List<int>>();
+            _playerAreasByClientId = new Dictionary<ulong, List<int>>();
 
             foreach (var clientId in connectedClientIds)
             {
-                var playerCards = new int[5];
+                var playerCards = new List<int>();
                 for (int i = 0; i < 5; i++)
                 {
                     var randomIndex = Random.Range(0, allCardTypes.Count);
                     var randomCardType = allCardTypes[randomIndex];
-                    playerCards[i] = randomCardType;
+                    playerCards.Add(randomCardType);
                     allCardTypes.RemoveAt(randomIndex);
                 }
-                playerHandsByClientId.Add(clientId, playerCards);
+                _playerHandsByClientId.Add(clientId, playerCards);
+                _playerAreasByClientId.Add(clientId, new List<int>());
             }
         }
 
@@ -79,22 +82,22 @@ namespace Shakalaka
                 playerHandData = new PileData
                 {
                     visibility = PileVisibility.VisibleForPlayer,
-                    cards = playerHandsByClientId[clientId]
+                    cards = _playerHandsByClientId[clientId].ToArray()
                 },
                 opponentHandData = new PileData()
                 {
                     visibility = PileVisibility.InvisibleForPlayer,
-                    cards = new int[playerHandsByClientId[opponentId].Length]
+                    cards = new int[_playerHandsByClientId[opponentId].Count]
                 },
                 playerAreaData = new PileData()
                 {
                     visibility = PileVisibility.VisibleForPlayer,
-                    cards = Array.Empty<int>()
+                    cards = _playerAreasByClientId[clientId].ToArray()
                 },
                 opponentAreaData = new PileData()
                 {
                     visibility = PileVisibility.VisibleForPlayer,
-                    cards = Array.Empty<int>()
+                    cards = _playerAreasByClientId[opponentId].ToArray()
                 }
             };
             
@@ -116,6 +119,17 @@ namespace Shakalaka
 
             opponentId = ulong.MaxValue;
             return false;
+        }
+
+        public void ProcessCardMoveFromHandToArea(int cardIndex, ulong clientId)
+        {
+            // ideally we check if the card exists in hand and is permitted to be moved, rejecting the request in case it can't
+            
+            var cardType = _playerHandsByClientId[clientId][cardIndex];
+            _playerHandsByClientId[clientId].RemoveAt(cardIndex);
+            _playerAreasByClientId[clientId].Add(cardType);
+            
+            SendBoardToClients();
         }
     }
 }

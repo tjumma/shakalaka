@@ -31,6 +31,8 @@ namespace Shakalaka
 
         private void SetupPile(CardsPile pileView, PileData pileData)
         {
+            pileView.RemoveAll(destroyCardObject: true);
+            
             pileView.faceDown = pileData.visibility == PileVisibility.InvisibleForPlayer;
             
             foreach (var cardType in pileData.cards)

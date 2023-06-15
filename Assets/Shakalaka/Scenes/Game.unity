@@ -296,6 +296,7 @@ MonoBehaviour:
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
   SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
   DontDestroyWithOwner: 1
   AutoObjectParentSync: 1
 --- !u!114 &489955846
@@ -619,7 +620,7 @@ MonoBehaviour:
   width: 0.12
   maxCardAngle: 0
   yPerCard: -0.2
-  zDistance: -0.01
+  zDistance: -0.02
   moveDuration: 0.5
   cardHolderPrefab: {fileID: 74794518}
 --- !u!4 &759704812
@@ -1206,6 +1207,7 @@ MonoBehaviour:
   SynchronizeTransform: 0
   ActiveSceneSynchronization: 0
   SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
 --- !u!114 &1559733852
@@ -1314,7 +1316,7 @@ MonoBehaviour:
   width: 5
   maxCardAngle: 5
   yPerCard: 0
-  zDistance: -0.01
+  zDistance: -0.02
   moveDuration: 0.5
   cardHolderPrefab: {fileID: 668878784}
 --- !u!4 &2069065219
@@ -1385,7 +1387,7 @@ MonoBehaviour:
   width: 5
   maxCardAngle: 5
   yPerCard: 0
-  zDistance: -0.01
+  zDistance: -0.02
   moveDuration: 0.5
   cardHolderPrefab: {fileID: 894029208361055694}
 --- !u!1 &2234615529126165882
@@ -1489,7 +1491,7 @@ MonoBehaviour:
   width: 0.12
   maxCardAngle: 0
   yPerCard: -0.2
-  zDistance: -0.01
+  zDistance: -0.02
   moveDuration: 0.5
   cardHolderPrefab: {fileID: 5725855407711741177}
 --- !u!1 &7203677135185400313

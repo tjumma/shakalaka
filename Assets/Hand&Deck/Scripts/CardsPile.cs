@@ -60,7 +60,7 @@ public class CardsPile : MonoBehaviour
 		OnCountChanged?.Invoke(cards.Count);
 	}
 
-	public int Remove(GameObject card)
+	public int Remove(GameObject card, bool destroyCardObject = false)
 	{
 		if (!cards.Contains(card))
 			return -1;
@@ -74,6 +74,9 @@ public class CardsPile : MonoBehaviour
 		card.transform.DOKill();
 		card.transform.SetParent(null);
 		updatePositions = true;
+		
+		if (destroyCardObject)
+			Destroy(card.gameObject);
 
 		OnCountChanged?.Invoke(cards.Count);
 		return cardIndex;
@@ -84,10 +87,10 @@ public class CardsPile : MonoBehaviour
 		Remove(cards[index]);
 	}
 
-	public void RemoveAll()
+	public void RemoveAll(bool destroyCardObject = false)
 	{
 		while (cards.Count > 0)
-			Remove(cards[0]);
+			Remove(cards[0], destroyCardObject);
 	}
 
 	Transform GetCardHolder()

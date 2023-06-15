@@ -1,6 +1,4 @@
-﻿#if DEDICATED_SERVER
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
@@ -62,8 +60,7 @@ namespace Shakalaka
                 //already allocated
                 MultiplayEventCallbacks_Allocate(new MultiplayAllocation("", serverConfig.ServerId,
                     serverConfig.AllocationId)).Forget();
-
-
+            
             // var authenticator = Container.Resolve<Authenticator>();
             // await authenticator.Authenticate();
             // await relay.CreateRelayServer();
@@ -163,6 +160,4 @@ namespace Shakalaka
             response.CreatePlayerObject = false;
         }
     }
-
 }
-#endif

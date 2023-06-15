@@ -9,7 +9,7 @@ namespace Shakalaka
         [MenuItem("Mode/Client")]
         private static void ModeClient()
         {
-            Debug.Log("Mode Client");
+            Debug.Log("Mode P2P");
             
             List<EditorBuildSettingsScene> editorBuildSettingsScenes = new List<EditorBuildSettingsScene>();
             
@@ -28,7 +28,7 @@ namespace Shakalaka
         [MenuItem("Mode/Server")]
         private static void ModeServer()
         {
-            Debug.Log("Mode Server");
+            Debug.Log("Mode DGS");
             
             List<EditorBuildSettingsScene> editorBuildSettingsScenes = new List<EditorBuildSettingsScene>();
             
@@ -42,6 +42,12 @@ namespace Shakalaka
 
             // Set the Build Settings window Scene list
             EditorBuildSettings.scenes = editorBuildSettingsScenes.ToArray();
+        }
+
+        [MenuItem("Mode/Single")]
+        private static void ModeSingle()
+        {
+            Debug.Log("Mode Single");
         }
     }
 }

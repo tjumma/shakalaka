@@ -2,6 +2,7 @@
 using Unity.Netcode;
 using UnityEngine;
 using VContainer;
+using VContainer.Unity;
 
 namespace Shakalaka
 {

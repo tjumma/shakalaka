@@ -1,29 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Shakalaka
 {
-    public class ServerBoard : NetworkBehaviour
+    public class ServerBoard : MonoBehaviour
     {
         private Dictionary<ulong, List<int>> _playerHandsByClientId;
         private Dictionary<ulong, List<int>> _playerAreasByClientId;
 
-        public override void OnNetworkSpawn()
-        {
-            if (!IsServer)
-                return;
-            
-            Debug.Log($"ServerBoard OnNetworkSpawn. OwnerClientId: {OwnerClientId}");
-        }
-
         public void GenerateAndSendBoard()
         {
-            if (!IsServer)
-                return;
-            
             GenerateServerBoard();
             SendBoardToClients();
         }

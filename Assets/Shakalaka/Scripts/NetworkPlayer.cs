@@ -29,17 +29,6 @@ namespace Shakalaka
             GameScope.Instance.Container.Inject(this);
         }
 
-        // private void Update()
-        // {
-        //     if (!IsOwner)
-        //         return;
-        //     
-        //     if (Input.GetKeyDown(KeyCode.Space))
-        //     {
-        //         RequestPlayerBoardServerRpc(new ServerRpcParams());
-        //     }
-        // }
-
         [ServerRpc]
         private void RequestPlayerBoardServerRpc(ServerRpcParams serverRpcParams)
         {

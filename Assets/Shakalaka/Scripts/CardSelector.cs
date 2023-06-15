@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using VContainer;
 
 namespace Shakalaka
 {
@@ -8,13 +9,20 @@ namespace Shakalaka
         [SerializeField] private InputManager inputManager;
         [SerializeField] private LayerMask cardMask;
         [SerializeField] private LayerMask playingAreaMask;
+        
+        private Camera _mainCamera;
 
         private Plane _selectedCardPilePlane;
         private GameObject _selectedCard;
         private CardsPile _selectedCardOriginPile;
         private int? _selectedCardPreviousIndex;
-
         private bool _isCardSelected;
+
+        [Inject]
+        private void Construct(Camera mainCamera)
+        {
+            _mainCamera = mainCamera;
+        }
 
         private void OnEnable()
         {
@@ -37,7 +45,7 @@ namespace Shakalaka
             if (!_isCardSelected)
                 return;
             
-            Ray ray = Camera.main.ScreenPointToRay(inputManager.TouchPosition);
+            Ray ray = _mainCamera.ScreenPointToRay(inputManager.TouchPosition);
 
             if (_selectedCardPilePlane.Raycast(ray, out var distance))
             {
@@ -76,7 +84,7 @@ namespace Shakalaka
             if (_selectedCard == null)
                 return;
             
-            Ray ray = Camera.main.ScreenPointToRay(touchPosition);
+            Ray ray = _mainCamera.ScreenPointToRay(touchPosition);
 
             if (Physics.Raycast(ray, out var hit, Mathf.Infinity, playingAreaMask))
             {

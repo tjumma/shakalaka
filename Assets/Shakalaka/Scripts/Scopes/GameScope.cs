@@ -9,6 +9,7 @@ namespace Shakalaka
 {
     public class GameScope : SingletonScope<GameScope>
     {
+        [SerializeField] private Camera mainCamera;
         [SerializeField] private ServerBoard serverBoard;
         [SerializeField] private PlayerSpawner playerSpawner;
         [SerializeField] private ClientBoardMVP clientBoardMvp;
@@ -17,6 +18,7 @@ namespace Shakalaka
         protected override void Configure(IContainerBuilder builder)
         {
             Debug.Log("GameScope Configure");
+            builder.RegisterComponent(mainCamera);
             builder.RegisterComponent(serverBoard);
             builder.RegisterComponent(playerSpawner);
             builder.RegisterComponent(clientBoardMvp);

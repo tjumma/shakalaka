@@ -8,6 +8,8 @@ namespace Shakalaka
     {
         [SerializeField] private CardsPile playerHand;
         [SerializeField] private CardsPile opponentHand;
+        [SerializeField] private CardsPile playerArea;
+        [SerializeField] private CardsPile opponentArea;
 
         [SerializeField] private GameObject cardPrefab;
 
@@ -19,17 +21,19 @@ namespace Shakalaka
             _container = container;
         }
 
-        public void SetupBoard(ClientBoard clientBoard)
+        public void SetupBoard(ClientBoardData clientBoardData)
         {
-            SetupPile(playerHand, clientBoard.playerPile);
-            SetupPile(opponentHand, clientBoard.opponentPile);
+            SetupPile(playerHand, clientBoardData.playerHandData);
+            SetupPile(opponentHand, clientBoardData.opponentHandData);
+            SetupPile(playerArea, clientBoardData.playerAreaData);
+            SetupPile(opponentArea, clientBoardData.opponentAreaData);
         }
 
-        private void SetupPile(CardsPile pileView, Pile pile)
+        private void SetupPile(CardsPile pileView, PileData pileData)
         {
-            pileView.faceDown = pile.visibility == PileVisibility.InvisibleForPlayer;
+            pileView.faceDown = pileData.visibility == PileVisibility.InvisibleForPlayer;
             
-            foreach (var cardType in pile.cards)
+            foreach (var cardType in pileData.cards)
             {
                 var cardObject = _container.Instantiate(cardPrefab);
                 cardObject.GetComponent<CardView>().SetType(cardType);

@@ -1,5 +1,4 @@
-﻿using Unity.Netcode;
-using UnityEngine;
+﻿using UnityEngine;
 using VContainer;
 
 namespace Shakalaka
@@ -92,6 +91,8 @@ namespace Shakalaka
                 var newCardsPile = hit.transform.gameObject.GetComponentInParent<CardsPile>();
                 
                 newCardsPile.Add(_selectedCard);
+
+                GameScope.Instance.Player.RequestCardMove();
 
                 // var cardPos = _selectedCard.transform.position;
                 // cardPos.y = 0f;

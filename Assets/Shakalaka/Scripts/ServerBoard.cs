@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Shakalaka
 {
@@ -67,22 +69,32 @@ namespace Shakalaka
             }
         }
 
-        public ClientBoard GetPlayerBoard(ulong clientId)
+        public ClientBoardData GetPlayerBoard(ulong clientId)
         {
             if (!TryGetOpponentsId(clientId, out var opponentId))
                 Debug.LogError($"There is no opponent for client {clientId}!");
             
-            var playerBoard = new ClientBoard
+            var playerBoard = new ClientBoardData
             {
-                playerPile = new Pile
+                playerHandData = new PileData
                 {
                     visibility = PileVisibility.VisibleForPlayer,
                     cards = playerHandsByClientId[clientId]
                 },
-                opponentPile = new Pile()
+                opponentHandData = new PileData()
                 {
                     visibility = PileVisibility.InvisibleForPlayer,
                     cards = new int[playerHandsByClientId[opponentId].Length]
+                },
+                playerAreaData = new PileData()
+                {
+                    visibility = PileVisibility.VisibleForPlayer,
+                    cards = Array.Empty<int>()
+                },
+                opponentAreaData = new PileData()
+                {
+                    visibility = PileVisibility.VisibleForPlayer,
+                    cards = Array.Empty<int>()
                 }
             };
             

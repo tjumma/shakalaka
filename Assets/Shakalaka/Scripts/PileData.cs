@@ -4,7 +4,7 @@ using Unity.Netcode;
 namespace Shakalaka
 {
     [Serializable]
-    public struct Pile : INetworkSerializable
+    public struct PileData : INetworkSerializable
     {
         public PileVisibility visibility;
         public int[] cards;

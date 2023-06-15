@@ -197,6 +197,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerHand: {fileID: 2234615529126165880}
   opponentHand: {fileID: 2069065218}
+  playerArea: {fileID: 6637350409430477903}
+  opponentArea: {fileID: 759704811}
   cardPrefab: {fileID: 5086913239241074552, guid: 632ce1a87eada2c4382b837d1a8bb49a,
     type: 3}
 --- !u!1 &463363193

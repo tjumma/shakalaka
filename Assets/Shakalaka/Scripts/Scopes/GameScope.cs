@@ -14,6 +14,8 @@ namespace Shakalaka
         [SerializeField] private PlayerSpawner playerSpawner;
         [SerializeField] private ClientBoardMVP clientBoardMvp;
         [SerializeField] private CardSelector cardSelector;
+
+        public NetworkPlayer Player { get; private set; }
         
         protected override void Configure(IContainerBuilder builder)
         {
@@ -40,6 +42,12 @@ namespace Shakalaka
         {
             playerSpawner.SpawnPlayers();
             serverBoard.GenerateAndSendBoard();
+        }
+
+        public void RegisterPlayer(NetworkPlayer player)
+        {
+            Player = player;
+            Container.Inject(player);
         }
     }
 }

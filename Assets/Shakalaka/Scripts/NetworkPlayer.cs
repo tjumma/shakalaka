@@ -26,7 +26,7 @@ namespace Shakalaka
         public override void OnNetworkSpawn()
         {
             Debug.Log($"NetworkPlayer OnNetworkSpawn. OwnerClientId: {OwnerClientId}");
-            GameScope.Instance.Container.Inject(this);
+            GameScope.Instance.RegisterPlayer(this);
         }
 
         [ServerRpc]
@@ -42,11 +42,16 @@ namespace Shakalaka
         }
         
         [ClientRpc]
-        public void SendPlayerBoardClientRpc(ClientBoard clientBoard, ClientRpcParams rpsParams)
+        public void SendPlayerBoardClientRpc(ClientBoardData clientBoardData, ClientRpcParams rpsParams)
         {
             Debug.Log($"This will send specific PlayerBoard to each player");
             
-            _clientBoardMvp.SetupBoard(clientBoard);
+            _clientBoardMvp.SetupBoard(clientBoardData);
+        }
+
+        public void RequestCardMove()
+        {
+            Debug.Log("Requesting card move");
         }
     }
 }
